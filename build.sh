@@ -27,29 +27,37 @@ echo "Syncing Ofox"
 git clone https://gitlab.com/orangefox/sync.git ; cd sync
 ./get_fox_10.sh ~/fox
 cd ~/fox/vendor/recovery
-#rm OrangeFox.sh
-#wget http://transfer.sh/1LMCOMg/OrangeFox.sh
-#chmod +x OrangeFox.sh
-git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
-git cherry-pick 76afae08593815f8053ce1d56a2f29856a7bda4c
+rm OrangeFox.sh
+wget http://transfer.sh/1hnD6Md/OrangeFox.sh
+chmod +x OrangeFox.sh
+#git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
+#git cherry-pick 76afae08593815f8053ce1d56a2f29856a7bda4c
+cd Files
+wget http://transfer.sh/1uPwYh1/copy-bins-to-internal
+chmod +x copy-bins-to-internal
 echo ""
 echo "Cloning trees"
 cd ~/fox
 git clone https://gitlab.com/orangefox/device/a51nsxx ~/fox/device/samsung/a51
-cd ~/fox/device/samsung/a51/recovery/root/system/
-mkdir bin
-cd bin
-wget http://transfer.sh/1gHQPWY/postrecoveryboot.sh
-chmod +x postrecoveryboot.sh
+#cd ~/fox/device/samsung/a51/recovery/root/system/
+#mkdir bin
+#cd bin
+#wget http://transfer.sh/1gHQPWY/postrecoveryboot.sh
+#chmod +x postrecoveryboot.sh
 echo ""
 echo "Starting Build"
 cd ~/fox
 . build/envsetup.sh
 export OF_MAINTAINER="Yillié"
 #export FOX_EXCLUDE_NANO_EDITOR= 1
-#unset FOX_DYNAMIC_SAMSUNG_FIX
+unset FOX_DYNAMIC_SAMSUNG_FIX
 #export FOX_USE_TAR_BINARY=1
-#export FOX_CUSTOM_BINS_TO_SDCARD=1
+export FOX_CUSTOM_BINS_TO_INTERNAL=1
+export FOX_USE_SED_BINARY=1
+export FOX_USE_TAR_BINARY=1
+export FOX_USE_GREP_BINARY=1
+export FOX_USE_XZ_UTILS=1
+export FOX_USE_NANO_EDITOR=1
 lunch omni_a51-eng
 make recoveryimage
 echo ""
