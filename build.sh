@@ -27,8 +27,11 @@ echo "Syncing Ofox"
 git clone https://gitlab.com/orangefox/sync.git ; cd sync
 ./get_fox_10.sh ~/fox
 cd ~/fox/vendor/recovery
-git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
-git cherry-pick 76afae08593815f8053ce1d56a2f29856a7bda4c
+rm OrangeFox.sh
+wget http://transfer.sh/1MdsBAm/OrangeFox.sh
+chmod +x OrangeFox.sh
+#git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
+#git cherry-pick 76afae08593815f8053ce1d56a2f29856a7bda4c
 echo ""
 echo "Cloning trees"
 cd ~/fox
@@ -37,6 +40,10 @@ echo ""
 echo "Starting Build"
 . build/envsetup.sh
 export OF_MAINTAINER="Yillié"
+export FOX_EXCLUDE_NANO_EDITOR= 1
+unset FOX_DYNAMIC_SAMSUNG_FIX
+export FOX_USE_TAR_BINARY=1
+export FOX_CUSTOM_BINS_TO_SDCARD=1
 lunch omni_a51-eng
 make recoveryimage
 echo ""
@@ -44,4 +51,3 @@ echo "Uploading zip"
 cd ~/fox/out/target/product/*
 curl -sL https://git.io/file-transfer | sh
 ./transfer wet $(ls OrangeFox*.zip)
-
