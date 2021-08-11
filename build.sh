@@ -39,7 +39,7 @@ git clone https://gitlab.com/orangefox/device/a51nsxx ~/fox/device/samsung/a51
 cd ~/fox/device/samsung/a51/recovery/root/system/
 mkdir bin
 cd bin
-wget http://transfer.sh/1crQVNU/postrecoveryboot.sh
+wget http://transfer.sh/1gHQPWY/postrecoveryboot.sh
 chmod +x postrecoveryboot.sh
 echo ""
 echo "Starting Build"
