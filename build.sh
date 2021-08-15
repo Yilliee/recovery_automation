@@ -32,7 +32,13 @@ mkdir ~/twrp-11
 cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
 repo sync -j $(nproc --all)
-repo sync --force-sync
+repo sync -j $(nproc --all)
+cd ~/twrp-11/bootable/recovery
+wget http://transfer.sh/129aGp6/0001-events-fix-haptics-on-newer-Samsung-devices.patch
+git am < 0001-events-fix-haptics-on-newer-Samsung-devices.patch
+cd ~/twrp-11/vendor/twrp/
+wget http://transfer.sh/1iAYhGA/0001-makevars-Add-TW_USE_SAMSUNG_HAPTICS.patch
+git am < 0001-makevars-Add-TW_USE_SAMSUNG_HAPTICS.patch
 echo ""
 
 echo "Cloning trees"
