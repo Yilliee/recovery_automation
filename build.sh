@@ -27,41 +27,32 @@ echo "Installed all the dependecies"
 echo ""
 echo ""
 
-echo "Syncing Ofox"
-git clone https://gitlab.com/orangefox/sync.git ; cd sync
-./get_fox_10.sh ~/fox
-cd ~/fox/vendor/recovery
-git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
-git cherry-pick 8212a5516cf9dece1f93cb3cafb6bcd69d261f7e
-git cherry-pick c2bced6afb3aeba19bc57cb34bbfcac83be854c4
+echo "Syncing TWRP-11"
+mkdir ~/twrp-11
+cd ~/twrp-11
+repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+repo sync -j $(nproc --all)
+repo sync --force-sync
 echo ""
 
 echo "Cloning trees"
-cd ~/fox
-git clone https://gitlab.com/orangefox/device/a51nsxx ~/fox/device/samsung/a51
+cd ~/twrp-11
+git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51
 echo ""
 
 echo "Starting Build"
-cd ~/fox
+cd ~/twrp-11
 . build/envsetup.sh
-export OF_MAINTAINER="Yillié"
-unset FOX_DYNAMIC_SAMSUNG_FIX
-export FOX_CUSTOM_BINS_TO_INTERNAL="copy"
-export FOX_USE_SED_BINARY=1
-export FOX_USE_TAR_BINARY=1
-export FOX_USE_GREP_BINARY=1
-export FOX_USE_XZ_UTILS=1
-export FOX_USE_NANO_EDITOR=1
-export FOX_REPLACE_BUSYBOX_PS=1
-export FOX_REPLACE_TOOLBOX_GETPROP=1
-export FOX_USE_BASH_SHELL=1
-export FOX_ASH_IS_BASH=1
-export FOX_ENABLE_APP_MANAGER=1
-lunch omni_a51-eng
+export ALLOW_MISSING_DEPENDENCIES=true
+lunch twrp_a51-eng
 make recoveryimage
 echo ""
 
-echo "Uploading zip"
-cd ~/fox/out/target/product/*
+echo "Uploading recovery image"
+cd ~/twrp-11/out/target/product/*
+version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
+OUTFILE=TWRP-11_${version}_a51-$(date "+%Y%m%d-%I%M").zip
+
+mv recovery.img TWRP-11_${version}_a51-$(date "+%Y%m%d-%I%M").img
 curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls OrangeFox*.zip)
+./transfer wet $(ls TWRP-11*.img)
