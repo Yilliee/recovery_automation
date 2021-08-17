@@ -34,11 +34,17 @@ cd ~/fox/vendor/recovery
 git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
 git cherry-pick 8212a5516cf9dece1f93cb3cafb6bcd69d261f7e
 git cherry-pick c2bced6afb3aeba19bc57cb34bbfcac83be854c4
+cd ~/fox/bootable/recovery
+git fetch https://github.com/Yilliee/fox_bootable_recovery 10.0_2
+git cherry-pick b2a046cefabf42c3a201622cc6560d138e0fbb32
 echo ""
 
 echo "Cloning trees"
 cd ~/fox
 git clone https://gitlab.com/orangefox/device/a51nsxx ~/fox/device/samsung/a51
+echo "" >> ~/fox/device/samsung/a51/BoardConfig.mk
+echo "# Don't Include Apex in recovery image" >> ~/fox/device/samsung/a51/BoardConfig.mk
+echo "TW_EXCLUDE_APEX := true" >> ~/fox/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
@@ -56,7 +62,6 @@ export FOX_REPLACE_BUSYBOX_PS=1
 export FOX_REPLACE_TOOLBOX_GETPROP=1
 export FOX_USE_BASH_SHELL=1
 export FOX_ASH_IS_BASH=1
-export FOX_ENABLE_APP_MANAGER=1
 lunch omni_a51-eng
 make recoveryimage
 echo ""
