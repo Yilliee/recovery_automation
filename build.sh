@@ -33,7 +33,7 @@ git clone https://gitlab.com/orangefox/sync.git ; cd sync
 cd ~/fox/vendor/recovery
 git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
 git cherry-pick 8212a5516cf9dece1f93cb3cafb6bcd69d261f7e
-git cherry-pick c2bced6afb3aeba19bc57cb34bbfcac83be854c4
+git cherry-pick a5dee11a78e30787e1490c65ba7d49f0fbc0b791
 cd ~/fox/bootable/recovery
 git fetch https://github.com/Yilliee/fox_bootable_recovery 10.0_2
 git cherry-pick b2a046cefabf42c3a201622cc6560d138e0fbb32
@@ -61,6 +61,8 @@ export FOX_USE_NANO_EDITOR=1
 export FOX_REPLACE_BUSYBOX_PS=1
 export FOX_REPLACE_TOOLBOX_GETPROP=1
 export FOX_USE_BASH_SHELL=1
+export FOX_VERSION=R11.1_2-testing
+export FOX_VARIANT=A12
 export FOX_ASH_IS_BASH=1
 lunch omni_a51-eng
 make recoveryimage
