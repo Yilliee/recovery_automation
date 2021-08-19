@@ -57,8 +57,7 @@ echo ""
 echo "Uploading recovery image"
 cd ~/twrp-11/out/target/product/*
 version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
-OUTFILE=TWRP-11_${version}_a51-$(date "+%Y%m%d-%I%M").zip
 
-mv recovery.img TWRP-11_${version}_a51-$(date "+%Y%m%d-%I%M").img
+mv recovery.img TWRP-${version}-a51-$(date "+%Y%m%d").img
 curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls TWRP-11*.img)
+./transfer wet $(ls TWRP*.img)
