@@ -30,7 +30,7 @@ echo ""
 echo "Syncing TWRP-10 Sources"
 mkdir ~/twrp-10
 cd ~/twrp-10
-repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-10
+repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-10.0 --depth=1
 repo sync -j $(nproc --all)
 echo ""
 
