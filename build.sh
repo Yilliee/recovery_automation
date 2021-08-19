@@ -30,7 +30,7 @@ echo ""
 echo "Syncing TWRP-11"
 mkdir ~/twrp-11
 cd ~/twrp-11
-repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
 cd ~/twrp-11/bootable/recovery
