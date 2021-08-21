@@ -64,6 +64,7 @@ export FOX_USE_BASH_SHELL=1
 export FOX_VERSION=R11.1_2-testing
 export FOX_VARIANT=A12
 export FOX_ASH_IS_BASH=1
+export OF_STATUS_H="88"
 lunch omni_a51-eng
 make recoveryimage
 echo ""
