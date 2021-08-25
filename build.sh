@@ -32,11 +32,19 @@ mkdir ~/shrp-10
 cd ~/shrp-10
 repo init https://github.com/SHRP/platform_manifest_twrp_omni.git -b v3_10.0 --depth=1
 repo sync -j $(nproc --all)
+cd ~/shrp-10/bootable/recovery
+git fetch https://github.com/Yilliee/fox_bootable_recovery.git 10.0_2
+git cherry-pick b2a046cefabf42c3a201622cc6560d138e0fbb32
 echo ""
 
 echo "Cloning trees"
 cd ~/shrp-10
 git clone https://github.com/yilliee/recovery_a51 -b shrp-10 ~/shrp-10/device/samsung/a51
+echo "" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
+echo "# Exclude Apex from recovery" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
+echo "# This should prevent the recovery from getting" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
+echo "# Stuck at splash in A12 aosp beta GSIs" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
+echo "TW_EXCLUDE_APEX := true" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
