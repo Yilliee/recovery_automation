@@ -33,12 +33,13 @@ cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
+cd ~/twrp-11/bootable/recovery/
+git fetch https://gerrit.twrp.me/android_bootable_recovery refs/changes/20/4220/3 && git cherry-pick FETCH_HEAD
 echo ""
 
 echo "Cloning trees"
 cd ~/twrp-11
-git clone https://github.com/Yilliee/recovery_RMX2001 -b fox_11.0 ~/twrp-11/device/realme/RMX2001
-rm ~/twrp-11/device/realme/RMX2001/vendorsetup.sh
+git clone https://github.com/Yilliee/recovery_RMX2001 -b twrp-11.0 ~/twrp-11/device/realme/RMX2001
 echo ""
 
 echo "Starting Build"
@@ -53,6 +54,6 @@ echo "Uploading recovery image"
 cd ~/twrp-11/out/target/product/*
 version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
 
-mv recovery.img TWRP-11_${version}_RMX2001-$(date "+%Y%m%d").img
+mv recovery.img TWRP-${version}-RMX2001-$(date "+%Y%m%d").img
 curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls TWRP-11*.img)
+./transfer wet $(ls TWRP*.img)
