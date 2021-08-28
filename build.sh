@@ -32,11 +32,19 @@ mkdir ~/shrp-10
 cd ~/shrp-10
 repo init https://github.com/SHRP/platform_manifest_twrp_omni.git -b v3_10.0 --depth=1
 repo sync -j $(nproc --all)
+cd ~/shrp-10/bootable/recovery
+git fetch https://github.com/Yilliee/fox_bootable_recovery.git 10.0_2
+git cherry-pick b2a046cefabf42c3a201622cc6560d138e0fbb32
 echo ""
 
 echo "Cloning trees"
 cd ~/shrp-10
 git clone https://github.com/yilliee/recovery_exynos9611 -b shrp-10 ~/shrp-10/device/samsung/exynos9611
+echo "" >> ~/shrp-10/device/samsung/exynos9611/BoardConfig.mk
+echo "# Exclude Apex from recovery" >> ~/shrp-10/device/samsung/exynos9611/BoardConfig.mk
+echo "# This should prevent the recovery from getting" >> ~/shrp-10/device/samsung/exynos9611/BoardConfig.mk
+echo "# Stuck at splash in beta GSIs" >> ~/shrp-10/device/samsung/exynos9611/BoardConfig.mk
+echo "TW_EXCLUDE_APEX := true" >> ~/shrp-10/device/samsung/exynos9611/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
@@ -50,7 +58,6 @@ echo ""
 
 echo "Uploading recovery image"
 cd ~/shrp-10/out/target/product/*
-version=$(cat ~/shrp-10/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
 
 curl -sL https://git.io/file-transfer | sh
 ./transfer wet $(ls SHRP*9611*.zip)
