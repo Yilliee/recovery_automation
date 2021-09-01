@@ -29,6 +29,8 @@ echo ""
 
 echo "Syncing Ofox"
 git clone https://gitlab.com/orangefox/sync.git ; cd sync
+wget http://transfer.sh/xO4UzS/0001-Fix-derps.patch
+git am < 0001-Fix-derps.patch
 ./get_fox_10.sh ~/fox
 rm -rf  ~/fox/vendor/recovery
 git clone https://gitlab.com/yillie/vendor_recovery -b fox_10.0 ~/fox/vendor/recovery
