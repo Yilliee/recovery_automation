@@ -30,10 +30,12 @@ echo ""
 echo "Syncing Ofox"
 git clone https://gitlab.com/orangefox/sync.git ; cd sync
 ./get_fox_10.sh ~/fox
-cd ~/fox/vendor/recovery
-git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
-git cherry-pick 8212a5516cf9dece1f93cb3cafb6bcd69d261f7e
-git cherry-pick a5dee11a78e30787e1490c65ba7d49f0fbc0b791
+rm -rf  ~/fox/vendor/recovery
+git clone https://gitlab.com/yillie/vendor_recovery -b fox_10.0 ~/fox/vendor/recovery
+#git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
+#git cherry-pick 8212a5516cf9dece1f93cb3cafb6bcd69d261f7e
+#git cherry-pick a5dee11a78e30787e1490c65ba7d49f0fbc0b791
+#git cherry-pick beea226c8eb0d46d89c30b7116691dc5d2ca81da
 cd ~/fox/bootable/recovery
 git fetch https://github.com/Yilliee/fox_bootable_recovery 10.0_2
 git cherry-pick b2a046cefabf42c3a201622cc6560d138e0fbb32
@@ -52,7 +54,7 @@ cd ~/fox
 . build/envsetup.sh
 export OF_MAINTAINER="Yillié"
 unset FOX_DYNAMIC_SAMSUNG_FIX
-export FOX_CUSTOM_BINS_TO_INTERNAL="copy"
+export FOX_CUSTOM_BINS_TO_INTERNAL="compress"
 export FOX_USE_SED_BINARY=1
 export FOX_USE_TAR_BINARY=1
 export FOX_USE_GREP_BINARY=1
