@@ -33,12 +33,6 @@ cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
-cd ~/twrp-11/bootable/recovery
-wget http://transfer.sh/129aGp6/0001-events-fix-haptics-on-newer-Samsung-devices.patch
-git am < 0001-events-fix-haptics-on-newer-Samsung-devices.patch
-cd ~/twrp-11/vendor/twrp/
-wget http://transfer.sh/1iAYhGA/0001-makevars-Add-TW_USE_SAMSUNG_HAPTICS.patch
-git am < 0001-makevars-Add-TW_USE_SAMSUNG_HAPTICS.patch
 echo ""
 
 echo "Cloning trees"
@@ -57,7 +51,8 @@ echo ""
 echo "Uploading recovery image"
 cd ~/twrp-11/out/target/product/*
 version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
+version=$(echo $version | cut -c1-5)
 
-mv recovery.img TWRP-${version}-a51-$(date "+%Y%m%d").img
+mv recovery.img TWRP-11-${version}-a51-$(date "+%Y%m%d").img
 curl -sL https://git.io/file-transfer | sh
 ./transfer wet $(ls TWRP*.img)
