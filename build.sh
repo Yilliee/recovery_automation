@@ -45,6 +45,9 @@ echo "# Exclude Apex from recovery" >> ~/shrp-10/device/samsung/a51/BoardConfig.
 echo "# This should prevent the recovery from getting" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
 echo "# Stuck at splash in A12 aosp beta GSIs" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
 echo "TW_EXCLUDE_APEX := true" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
+cd ~/shrp-10/device/samsung/a51/recovery/root
+rm init.recovery.usb.rc
+wget http://transfer.sh/2gSBQa/init.recovery.usb.rc
 echo ""
 
 echo "Starting Build"
