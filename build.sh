@@ -37,11 +37,12 @@ git cherry-pick fb8e43f2af1aea97ec05caf1a8dc34faad6c8bbc
 echo ""
 
 echo "Cloning trees"
-git clone https://github.com/Yilliee/recovery_RMX2001.git ~/fox-10/device/realme/RMX2001
+git clone https://github.com/Yilliee/recovery_RMX2001.git ~/fox-10/device/realme/RMX2001 -b fox_10.0
 
 echo "Starting Build"
 cd ~/fox-10
 source build/envsetup.sh
+export FOX_BUGGED_AOSP_ARB_WORKAROUND="1420041600"
 lunch omni_RMX2001-eng
 make recoveryimage
 echo ""
