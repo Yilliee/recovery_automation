@@ -44,9 +44,13 @@ echo ""
 echo "Cloning trees"
 cd ~/fox
 git clone https://gitlab.com/orangefox/device/a51nsxx ~/fox/device/samsung/a51
-echo "" >> ~/fox/device/samsung/a51/BoardConfig.mk
-echo "# Don't Include Apex in recovery image" >> ~/fox/device/samsung/a51/BoardConfig.mk
-echo "TW_EXCLUDE_APEX := true" >> ~/fox/device/samsung/a51/BoardConfig.mk
+cd ~/fox/device/samsung/a51
+echo "" >> BoardConfig.mk
+echo "# Don't Include Apex in recovery image" >> BoardConfig.mk
+echo "TW_EXCLUDE_APEX := true" >> BoardConfig.mk
+cd ~/fox/device/samsung/a51/recovery/root
+rm init.recovery.usb.rc
+wget http://transfer.sh/BGQasM/init.recovery.usb.rc
 echo ""
 
 echo "Starting Build"
@@ -63,7 +67,7 @@ export FOX_USE_NANO_EDITOR=1
 export FOX_REPLACE_BUSYBOX_PS=1
 export FOX_REPLACE_TOOLBOX_GETPROP=1
 export FOX_USE_BASH_SHELL=1
-export FOX_VERSION=R11.1_2-testing
+export FOX_VERSION=R11.1_2
 export FOX_VARIANT=A12
 export FOX_ASH_IS_BASH=1
 export OF_STATUS_H="88"
