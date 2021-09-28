@@ -38,6 +38,8 @@ echo ""
 echo "Cloning trees"
 cd ~/twrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
+cd ~/twrp-11/device/samsung/a51/
+git reset --hard HEAD^
 echo ""
 
 echo "Starting Build"
@@ -53,6 +55,6 @@ cd ~/twrp-11/out/target/product/*
 version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
 version=$(echo $version | cut -c1-5)
 
-mv recovery.img TWRP-11-${version}-a51-$(date "+%Y%m%d")-$(TZ='Asia/Karachi' date "+%H%M").img
+mv recovery.img TWRP-11-${version}-a51-$(TZ='Asia/Karachi' date "+%Y%m%d-%H%M").img
 curl -sL https://git.io/file-transfer | sh
 ./transfer wet $(ls TWRP*.img)
