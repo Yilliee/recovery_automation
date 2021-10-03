@@ -33,13 +33,15 @@ cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
+cd ~/twrp-11/bootable/recovery
+wget http://transfer.sh/BoO3dQ/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
+git am < 0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
 echo ""
 
 echo "Cloning trees"
 cd ~/twrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
-cd ~/twrp-11/device/samsung/a51/
-git reset --hard HEAD^
+echo "TW_CLOCK_POS_X := 1000" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
