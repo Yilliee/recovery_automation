@@ -34,14 +34,23 @@ repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.g
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
 cd ~/twrp-11/bootable/recovery
-wget http://transfer.sh/BoO3dQ/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
+wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
+wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
 git am < 0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
+git am < /0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
+cd ~/twrp-11/bootable/recovery/gui/theme/portrait_hdpi
+rm ui.xml
+rm splash.xml
+wget http://transfer.sh/sb5bz7/ui.xml
+wget http://transfer.sh/88FU5c/splash.xml
 echo ""
 
 echo "Cloning trees"
 cd ~/twrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
-echo "TW_CLOCK_POS_X := 1000" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CLOCK_POS_X := 350" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_STATUSBAR_PADDING_LEFT := 50" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_STATUSBAR_PADDING_RIGHT := 950" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
