@@ -32,11 +32,16 @@ mkdir ~/twrp-10
 cd ~/twrp-10
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-10.0 --depth=1
 repo sync -j $(nproc --all)
+cd ~/twrp-10/bootable/recovery
+git fetch https://github.com/Yilliee/fox_bootable_recovery 10.0_2
+git cherry-pick b2a046cefabf42c3a201622cc6560d138e0fbb32
 echo ""
 
 echo "Cloning trees"
 cd ~/twrp-10
 git clone https://github.com/yilliee/recovery_RMX2001 -b twrp-10.0 ~/twrp-10/device/realme/RMX2001
+echo "" >> ~/twrp-10/device/realme/RMX2001/BoardConfig.mk
+echo "TW_EXCLUDE_APEX := true" >> ~/twrp-10/device/realme/RMX2001/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
