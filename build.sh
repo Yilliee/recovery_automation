@@ -33,11 +33,15 @@ git clone https://gitlab.com/orangefox/sync.git ; cd sync
 cd ~/fox-10/vendor/recovery
 git fetch https://github.com/yilliee/fox_vendor_recovery fox_10.0
 git cherry-pick fb8e43f2af1aea97ec05caf1a8dc34faad6c8bbc
-
+cd ~/fox-10/bootable/recovery
+git fetch https://github.com/Yilliee/fox_bootable_recovery 10.0_2
+git cherry-pick b2a046cefabf42c3a201622cc6560d138e0fbb32
 echo ""
 
 echo "Cloning trees"
 git clone https://gitlab.com/OrangeFox/device/RMX2001.git ~/fox-10/device/realme/RMX2001 -b fox_10.0
+echo "" >> ~/fox-10/device/realme/RMX2001/BoardConfig.mk
+echo "TW_EXCLUDE_APEX := true" >> ~/fox-10/device/realme/RMX2001/BoardConfig.mk
 
 echo "Starting Build"
 cd ~/fox-10
