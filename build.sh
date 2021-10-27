@@ -33,7 +33,9 @@ cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
-#cd ~/twrp-11/bootable/recovery
+cd ~/twrp-11/bootable/recovery
+wget http://transfer.sh/rrQ0gb/0001-WiP-Try-adding-an-option-to-unshare-blocks-in-the-ad.patch
+git am < 0001-WiP-Try-adding-an-option-to-unshare-blocks-in-the-ad.patch
 #wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
 #wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
 #git am < 0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
@@ -48,6 +50,8 @@ echo ""
 echo "Cloning trees"
 cd ~/twrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
+echo "" >> ~/twrp-11/device/samsung/a51/device.mk
+echo "PRODUCT_PACKAGES += lptools lptools_static" >> ~/twrp-11/device/samsung/a51/device.mk
 #echo "TW_CLOCK_POS_X := 350" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 #echo "TW_STATUSBAR_PADDING_LEFT := 50" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 #echo "TW_STATUSBAR_PADDING_RIGHT := 950" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
