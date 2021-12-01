@@ -39,20 +39,15 @@ echo ""
 
 echo "Cloning trees"
 cd ~/twrp-11
-git clone https://github.com/Yilliee/recovery_RMX2001 -b twrp-10.0 ~/twrp-11/device/realme/RMX2001
-echo "" >> ~/twrp-11/device/realme/RMX2001/BoardConfig.mk
-echo "TW_EXCLUDE_APEX := true" >> ~/twrp-11/device/realme/RMX2001/BoardConfig.mk
-echo "BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem" >> ~/twrp-11/device/realme/RMX2001/BoardConfig.mk
-cd ~/twrp-11/device/realme/RMX2001/
-rm omni_RMX2001.mk
-wget http://transfer.sh/F7vXGa/omni_RMX2001.mk
+#git clone https://github.com/Yilliee/recovery_RMX2001 -b twrp-11.0 ~/twrp-11/device/realme/RMX2001
+git clone https://github.com/GoFarAway71/twrp_realme_RMX2001 -b android-11 ~/twrp-11/device/realme/RMX2001
 echo ""
 
 echo "Starting Build"
 cd ~/twrp-11
 . build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
-lunch omni_RMX2001-eng
+lunch twrp_RMX2001-eng
 make recoveryimage
 echo ""
 
@@ -61,6 +56,6 @@ cd ~/twrp-11/out/target/product/*
 version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
 version=$(echo $version | cut -c 1-5)
 
-mv recovery.img TWRP-10-${version}-RMX2001-$(date "+%Y%m%d").img
+mv recovery.img TWRP-11-${version}-RMX2001-$(date "+%Y%m%d").img
 curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls TWRP-10*.img)
+./transfer wet $(ls TWRP-11*.img)
