@@ -39,8 +39,8 @@ echo ""
 
 echo "Cloning trees"
 cd ~/twrp-11
-#git clone https://github.com/Yilliee/recovery_RMX2001 -b twrp-11.0 ~/twrp-11/device/realme/RMX2001
-git clone https://github.com/GoFarAway71/twrp_realme_RMX2001 -b android-11 ~/twrp-11/device/realme/RMX2001
+git clone https://github.com/Yilliee/recovery_RMX2001 -b fox-11.0 ~/twrp-11/device/realme/RMX2001
+rm ~/twrp-11/device/realme/RMX2001/vendorsetup.sh
 echo ""
 
 echo "Starting Build"
