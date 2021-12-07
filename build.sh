@@ -1,4 +1,5 @@
 #!/bin/bash
+# Afaneh menu V1.0 X recovery automation
 
 echo "Executing Build Script"
 echo ""
@@ -11,65 +12,75 @@ apt install git-core gnupg flex bison build-essential \
 zip curl zlib1g-dev gcc-multilib g++-multilib \
 libc6-dev-i386 libncurses5-dev lib32ncurses5-dev \
 x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev \
-libxml2-utils xsltproc unzip fontconfig openjdk-8-jdk -y
-
-echo "Installing the repo launcher"
-mkdir ~/bin
-PATH=~/bin:$PATH
-curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-chmod a+x ~/bin/repo
-echo ""
+libxml2-utils xsltproc unzip fontconfig openjdk-8-jdk aarch64-linux-gnu-gcc -y
 
 echo "Configuring git"
 git config --global user.name "Yillié"
 git config --global user.email "yilliee@protonmail.com"
-echo "Installed all the dependecies"
-echo ""
-echo ""
 
-echo "Syncing TWRP-11"
-mkdir ~/twrp-11
-cd ~/twrp-11
-repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
-repo sync -j $(nproc --all)
-repo sync -j $(nproc --all)
-cd ~/twrp-11/bootable/recovery
-wget http://transfer.sh/rrQ0gb/0001-WiP-Try-adding-an-option-to-unshare-blocks-in-the-ad.patch
-git am < 0001-WiP-Try-adding-an-option-to-unshare-blocks-in-the-ad.patch
-#wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
-#wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
-#git am < 0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
-#git am < /0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
-#cd ~/twrp-11/bootable/recovery/gui/theme/portrait_hdpi
-#rm ui.xml
-#rm splash.xml
-#wget http://transfer.sh/sb5bz7/ui.xml
-#wget http://transfer.sh/88FU5c/splash.xml
-echo ""
+git clone https://github.com/Yilliee/android_kernel_samsung_a51 -b android-11.0 kernel
+cd kernel
 
-echo "Cloning trees"
-cd ~/twrp-11
-git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
-echo "" >> ~/twrp-11/device/samsung/a51/device.mk
-echo "PRODUCT_PACKAGES += lptools lptools_static" >> ~/twrp-11/device/samsung/a51/device.mk
-#echo "TW_CLOCK_POS_X := 350" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-#echo "TW_STATUSBAR_PADDING_LEFT := 50" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-#echo "TW_STATUSBAR_PADDING_RIGHT := 950" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-echo ""
+# Variables
+DIR=`readlink -f .`;
+PARENT_DIR=`readlink -f ${DIR}/..`;
 
-echo "Starting Build"
-cd ~/twrp-11
-. build/envsetup.sh
-export ALLOW_MISSING_DEPENDENCIES=true
-lunch twrp_a51-eng
-make recoveryimage
-echo ""
+export PLATFORM_VERSION=11
+export ANDROID_MAJOR_VERSION=r
+export CROSS_COMPILE=aarch64-linux-androidkernel-
+export CLANG_TRIPLE=aarch64-linux-gnu-
+export ARCH=arm64
+export LINUX_GCC_CROSS_COMPILE_PREBUILTS_BIN=$PARENT_DIR/aarch64-linux-android-4.9/bin
+export CLANG_PREBUILT_BIN=$PARENT_DIR/clang-r383902/bin
+export PATH=$PATH:$LINUX_GCC_CROSS_COMPILE_PREBUILTS_BIN:$CLANG_PREBUILT_BIN
+export LLVM=1
 
-echo "Uploading recovery image"
-cd ~/twrp-11/out/target/product/*
-version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
-version=$(echo $version | cut -c1-5)
+# Color
+ON_BLUE=`echo -e "\033[44m"`	# On Blue
+RED=`echo -e "\033[1;31m"`	# Red
+BLUE=`echo -e "\033[1;34m"`	# Blue
+GREEN=`echo -e "\033[1;32m"`	# Green
+Under_Line=`echo -e "\e[4m"`	# Text Under Line
+STD=`echo -e "\033[0m"`		# Text Clear
+ 
+# Functions
 
-mv recovery.img TWRP-11-${version}-a51-$(TZ='Asia/Karachi' date "+%Y%m%d-%H%M").img
-curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls TWRP*.img)
+toolchain(){
+  if [ ! -d $PARENT_DIR/aarch64-linux-android-4.9 ]; then
+    git clone --branch android-9.0.0_r59 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 $PARENT_DIR/aarch64-linux-android-4.9
+  fi
+}
+
+clang(){
+  if [ ! -d $PARENT_DIR/clang-r383902 ]; then
+    git clone https://github.com/AOSP-10/prebuilts_clang_host_linux-x86_clang-r383902 $PARENT_DIR/clang-r383902
+  fi
+}
+
+clean(){
+  echo "${GREEN}***** Cleaning in Progress *****${STD}";
+  make clean
+  make mrproper
+  [ -d "out" ] && rm -rf out
+  echo "${GREEN}***** Cleaning Done *****${STD}";
+}
+
+build(){
+  echo "${GREEN}***** Compiling kernel *****${STD}"
+  [ ! -d "out" ] && mkdir out
+  make -j$(nproc) -C $(pwd) exynos9610-a51xx_defconfig
+  make -j$(nproc) -C $(pwd)
+
+  [ -e arch/arm64/boot/Image.gz ] && cp arch/arm64/boot/Image.gz $(pwd)/out/Image.gz
+  if [ -e arch/arm64/boot/Image ]; then
+    cp arch/arm64/boot/Image $(pwd)/out/Image
+    curl -sL https://git.io/file-transfer | sh
+    ./transfer wet $(pwd)/out/Image
+  fi
+}
+
+# Run once
+toolchain
+clang
+
+build
