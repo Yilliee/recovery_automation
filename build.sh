@@ -33,10 +33,13 @@ git clone https://gitlab.com/OrangeFox/sync.git
 cd sync
 ./orangefox_sync.sh --branch 11.0 --path ~/fox-11
 echo ""
+cd ~/fox-11/vendor/recovery
+wget https://transfer.sh/5psDXk/0001-New-build-var-OF_MAINTAINER_AVATAR-by-Yilli.patch
+git am < 0001-New-build-var-OF_MAINTAINER_AVATAR-by-Yilli.patch
 
 echo "Cloning trees"
 cd ~/fox-11
-git clone https://github.com/Yilliee/recovery_RMX2001 -b fox-11.0 ~/fox-11/device/realme/RMX2001
+git clone https://github.com/Yilliee/recovery_RMX2001 -b fox_11.0 ~/fox-11/device/realme/RMX2001
 echo ""
 
 echo "Starting Build"
