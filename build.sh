@@ -31,6 +31,8 @@ echo "Syncing Fox-11"
 mkdir ~/fox-11
 git clone https://gitlab.com/OrangeFox/sync.git
 cd sync
+wget https://transfer.sh/p11Ys1/0001-orangefox_sync-Switch-http-for-twrp-11.0-manifest.patch
+git am 0001-orangefox_sync-Switch-http-for-twrp-11.0-manifest.patch
 ./orangefox_sync.sh --branch 11.0 --path ~/fox-11
 echo ""
 cd ~/fox-11/vendor/recovery
