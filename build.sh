@@ -34,19 +34,19 @@ cd sync
 ./orangefox_sync.sh --branch 11.0 --path ~/fox-11
 echo ""
 cd ~/fox-11/vendor/recovery
-wget https://transfer.sh/5psDXk/0001-New-build-var-OF_MAINTAINER_AVATAR-by-Yilli.patch
-git am < 0001-New-build-var-OF_MAINTAINER_AVATAR-by-Yilli.patch
+wget https://github.com/Yilliee/fox_vendor_recovery/commit/3d34e0bde8959bad4eb53d41c5dca3bc9523a41a.patch
+git am < 3d34e0bde8959bad4eb53d41c5dca3bc9523a41a.patch
 
 echo "Cloning trees"
 cd ~/fox-11
-git clone https://github.com/Yilliee/recovery_RMX2001 -b fox_11.0 ~/fox-11/device/realme/RMX2001
+git clone https://github.com/Yilliee/recovery_RMX2001 -b fox_11.0 ~/fox-11/device/realme/wasabi
 echo ""
 
 echo "Starting Build"
 cd ~/fox-11
 . build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
-lunch twrp_RMX2001-eng
+lunch twrp_wasabi-eng
 make recoveryimage
 echo ""
 
