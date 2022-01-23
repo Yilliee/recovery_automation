@@ -1,4 +1,18 @@
+on:
+
+  push:
+
+    branches: [ master ]
+
+    paths-ignore: 'README.md'
+
+  workflow_dispatch:
+
+
 #!/bin/bash
+
+
+
 
 echo "Executing Build Script"
 echo ""
