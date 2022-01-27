@@ -33,7 +33,10 @@ cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
-#cd ~/twrp-11/bootable/recovery
+cd ~/twrp-11/bootable/recovery
+wget https://transfer.sh/i1RmUr/0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
+git am 0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
+###############################
 #wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
 #wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
 #git am < 0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
@@ -43,14 +46,17 @@ repo sync -j $(nproc --all)
 #rm splash.xml
 #wget http://transfer.sh/sb5bz7/ui.xml
 #wget http://transfer.sh/88FU5c/splash.xml
+###############################
 echo ""
 
 echo "Cloning trees"
 cd ~/twrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
+###############################
 #echo "TW_CLOCK_POS_X := 350" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 #echo "TW_STATUSBAR_PADDING_LEFT := 50" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 #echo "TW_STATUSBAR_PADDING_RIGHT := 950" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+###############################
 echo ""
 
 echo "Starting Build"
