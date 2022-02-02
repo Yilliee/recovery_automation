@@ -34,8 +34,10 @@ repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.g
 repo sync -j $(nproc --all)
 repo sync -j $(nproc --all)
 cd ~/twrp-11/bootable/recovery
-wget https://transfer.sh/i1RmUr/0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
-git am 0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
+git reset --hard 2485980a9a4adc6edf9e68a7f246052428be7453
+###############################
+#wget https://transfer.sh/i1RmUr/0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
+#git am 0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
 ###############################
 #wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
 #wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
