@@ -35,7 +35,7 @@ repo sync -j 20
 rm -rf ~/twrp-11/bootable/recovery
 git clone https://github.com/TeamWin/android_bootable_recovery -b android-11 ~/twrp-11/bootable/recovery
 cd ~/twrp-11/bootable/recovery
-git reset --hard 2485980a9a4adc6edf9e68a7f246052428be7453
+git reset --hard 989dee2ac8958f6207c5514ccc9ec10f49344c84
 ###############################
 #wget https://transfer.sh/i1RmUr/0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
 #git am 0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
