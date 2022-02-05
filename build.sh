@@ -32,13 +32,9 @@ mkdir ~/twrp-11
 cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j 20
-rm -rf ~/twrp-11/bootable/recovery
-git clone https://github.com/TeamWin/android_bootable_recovery -b android-11 ~/twrp-11/bootable/recovery
-cd ~/twrp-11/bootable/recovery
-git reset --hard 989dee2ac8958f6207c5514ccc9ec10f49344c84
 ###############################
-#wget https://transfer.sh/i1RmUr/0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
-#git am 0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
+wget https://transfer.sh/i1RmUr/0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
+git am 0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
 ###############################
 #wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
 #wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
