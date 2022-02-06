@@ -50,4 +50,4 @@ echo "Uploading recovery image"
 cd ~/pbrp-11/out/target/product/*
 
 curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls PBRP*.zip)
+./transfer wet $(ls recovery.img)
