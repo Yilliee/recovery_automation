@@ -28,6 +28,8 @@ echo ""
 echo ""
 
 echo "Syncing SHRP-11 Sources"
+mkdir ~/shrp-11
+cd ~/shrp-11
 repo init https://github.com/SHRP/manifest.git -b v3_11.0 --depth=1
 repo sync --force-sync -j20
 echo ""
