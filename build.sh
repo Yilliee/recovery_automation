@@ -35,10 +35,7 @@ echo ""
 
 echo "Cloning trees"
 cd ~/pbrp-11
-git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/pbrp-11/device/samsung/a51 --depth=1 --single-branch
-cd ~/pbrp-11/device/samsung/a51/
-wget https://transfer.sh/eP3HQm/0001-Initial-BringUp-for-PBRP.patch
-git am 0001-Initial-BringUp-for-PBRP.patch
+git clone https://github.com/Yilliee/recovery_a51 -b pbrp-11 ~/pbrp-11/device/samsung/a51 --depth=1 --single-branch
 echo ""
 
 echo "Starting Build"
