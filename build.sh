@@ -36,10 +36,7 @@ echo ""
 
 echo "Cloning trees"
 cd ~/shrp-11
-git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/shrp-11/device/samsung/a51 --depth=1 --single-branch
-cd ~/shrp-11/device/samsung/a51/
-wget https://transfer.sh/GNl1PN/0001-BoardConfig-Add-SHRP-specific-flags.patch
-git am 0001-BoardConfig-Add-SHRP-specific-flags.patch
+git clone https://github.com/Yilliee/recovery_a51 -b shrp-11 ~/shrp-11/device/samsung/a51 --depth=1 --single-branch
 echo ""
 
 echo "Starting Build"
