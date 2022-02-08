@@ -32,27 +32,19 @@ mkdir ~/twrp-11
 cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j 20
-###############################
-#wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
-#wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
-#git am < 0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
-#git am < /0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
-#cd ~/twrp-11/bootable/recovery/gui/theme/portrait_hdpi
-#rm ui.xml
-#rm splash.xml
-#wget http://transfer.sh/sb5bz7/ui.xml
-#wget http://transfer.sh/88FU5c/splash.xml
-###############################
+cd ~/twrp-11/bootable/recovery
+wget https://transfer.sh/b5yB7E/0001-1-2-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_X.patch
+git am 0001-1-2-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_X.patch
+cd ~/twrp-11/vendor/twrp
+wget https://transfer.sh/uqutV0/0001-2-2-makevars-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_.patch
+git am 0001-2-2-makevars-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_.patch
 echo ""
 
 echo "Cloning trees"
 cd ~/twrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
-###############################
-#echo "TW_CLOCK_POS_X := 350" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-#echo "TW_STATUSBAR_PADDING_LEFT := 50" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-#echo "TW_STATUSBAR_PADDING_RIGHT := 950" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-###############################
+echo "TW_CPU_POS_X := 590" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_TIME_POS_X := 120" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
