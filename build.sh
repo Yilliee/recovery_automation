@@ -33,9 +33,6 @@ cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j 20
 ###############################
-wget https://transfer.sh/i1RmUr/0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
-git am 0001-sdcard-only-bind-mount-sdcard-after-successful-prepa.patch
-###############################
 #wget http://transfer.sh/DFCAtE/0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
 #wget http://transfer.sh/KDxMIa/0002-Allow-to-specify-the-status-bar-left-and-right-paddi.patch
 #git am < 0001-Add-an-option-to-specify-a-custom-x-axis-value-for-s.patch
