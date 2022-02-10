@@ -34,14 +34,12 @@ echo ""
 
 echo "Cloning trees"
 cd ~/fox-11
-git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/fox-11/device/samsung/a51 --depth=1 --single-branch
+git clone https://github.com/Yilliee/recovery_a51 -b fox-11 ~/fox-11/device/samsung/a51 --depth=1 --single-branch
 echo ""
 
 echo "Starting Build"
 cd ~/fox-11
 . build/envsetup.sh
-export ALLOW_MISSING_DEPENDENCIES=true
-export NOT_ORANGEFOX=true
 lunch twrp_a51-eng
 make recoveryimage
 echo ""
