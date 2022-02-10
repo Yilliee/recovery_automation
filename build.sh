@@ -38,9 +38,7 @@ repo sync -j 20
 #cd ~/twrp-11/vendor/twrp
 #wget https://transfer.sh/uqutV0/0001-2-2-makevars-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_.patch
 #git am 0001-2-2-makevars-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_.patch
-cd ~/twrp-11/bootable/recovery/gui/theme/portrait_hdpi/
-rm ui.xml
-wget https://transfer.sh/2KXNlV/ui.xml
+cp /drone/src/ui.xml ~/twrp-11/bootable/recovery/gui/theme/portrait_hdpi/ui.xml || exit 1
 echo ""
 
 echo "Cloning trees"
