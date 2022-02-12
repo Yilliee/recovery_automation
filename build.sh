@@ -37,6 +37,7 @@ echo ""
 echo "Cloning trees"
 cd ~/twrp-11
 git clone https://github.com/yilliee/recovery_exynos9611 -b twrp-11 ~/twrp-11/device/samsung/exynos9611
+git clone https://github.com/yilliee/recovery_universal9611-common -b twrp-11 ~/twrp-11/device/samsung/universal9611-common
 echo ""
 
 echo "Starting Build"
