@@ -55,7 +55,7 @@ cd ~/twrp-11
 . build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
 lunch twrp_a51-eng
-make recoveryimage
+make recoveryimage -j$( nproc --all )
 echo ""
 
 echo "Uploading recovery image"
