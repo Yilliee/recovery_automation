@@ -37,7 +37,7 @@ echo ""
 
 echo "Cloning trees"
 cd ~/fox
-git clone https://gitlab.com/orangefox/device/a51nsxx ~/fox/device/samsung/a51
+git clone https://github.com/Yilliee/recovery_a51 -b fox_10.0 ~/fox/device/samsung/a51
 echo ""
 
 echo "Starting Build"
