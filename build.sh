@@ -31,7 +31,7 @@ echo "Syncing Ofox"
 git clone https://gitlab.com/orangefox/sync.git ; cd sync
 ./orangefox_sync.sh --debug --ssh 0 --path ~/fox-10 -b 10.0
 cd ~/fox-10/vendor/recovery
-git fetch https://gitlab.com/yillie/vendor_recovery fox_10.0
+git fetch https://github.com/yilliee/fox_vendor_recovery fox_10.0
 git cherry-pick 55050eb9c14ea9be2b5e0621a7e3485b5c755109
 echo ""
 
@@ -43,6 +43,7 @@ echo "Starting Build"
 cd ~/fox-10
 . build/envsetup.sh
 lunch omni_a51-eng
+export oF_MAINTAINER="Yillié"
 make recoveryimage
 echo ""
 
