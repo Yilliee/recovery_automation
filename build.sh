@@ -38,6 +38,9 @@ echo ""
 echo "Cloning trees"
 git clone https://github.com/Yilliee/recovery_a51 -b fox_10.0 ~/fox-10/device/samsung/a51
 git clone https://github.com/Yilliee/recovery_universal9611-common -b fox_10.0 ~/fox-10/device/samsung/universal9611-common
+echo "#!/bin/sh" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
+echo "[ -f /sbin/from_fox_sd.sh ] && source /sbin/from_fox_sd.sh" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
+echo "exit 0" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
 echo ""
 
 echo "Starting Build"
@@ -45,6 +48,21 @@ cd ~/fox-10
 export CURR_DEVICE=a51
 export OF_MAINTAINER="Yillié"
 . build/envsetup.sh
+unset FOX_DYNAMIC_SAMSUNG_FIX
+export FOX_ADVANCED_SECURITY=1
+export FOX_USE_NANO_EDITOR=1
+export FOX_USE_SED_BINARY=1
+export FOX_USE_TAR_BINARY=1
+export FOX_USE_UNZIP_BINARY=1
+export FOX_USE_XZ_UTILS=1
+export FOX_REPLACE_BUSYBOX_PS=1
+export FOX_REPLACE_TOOLBOX_GETPROP=1
+export OF_DEVICE_WITHOUT_PERSIST=1
+export OF_DONT_KEEP_LOG_HISTORY=1
+export OF_ENABLE_LPTOOLS=1
+export OF_USE_HEXDUMP=1
+export OF_USE_SAMSUNG_HAPTICS=1
+export FOX_CUSTOM_BINS_TO_SDCARD=1
 lunch omni_a51-eng
 make recoveryimage
 echo ""
