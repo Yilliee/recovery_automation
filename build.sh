@@ -37,13 +37,15 @@ echo ""
 
 echo "Cloning trees"
 git clone https://github.com/Yilliee/recovery_a51 -b fox_10.0 ~/fox-10/device/samsung/a51
+git clone https://github.com/Yilliee/recovery_universal9611-common -b fox_10.0 ~/fox-10/device/samsung/universal9611-common
 echo ""
 
 echo "Starting Build"
 cd ~/fox-10
+export CURR_DEVICE=a51
+export OF_MAINTAINER="Yillié"
 . build/envsetup.sh
 lunch omni_a51-eng
-export oF_MAINTAINER="Yillié"
 make recoveryimage
 echo ""
 
