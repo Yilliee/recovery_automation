@@ -33,6 +33,7 @@ git clone https://gitlab.com/orangefox/sync.git ; cd sync
 cd ~/fox-10/vendor/recovery
 git fetch https://github.com/yilliee/fox_vendor_recovery fox_10.0
 git cherry-pick 55050eb9c14ea9be2b5e0621a7e3485b5c755109
+cp /drone/src/AromaFM.zip ./FoxFiles/AromaFM/AromaFM.zip
 echo ""
 
 echo "Cloning trees"
@@ -48,21 +49,6 @@ cd ~/fox-10
 export CURR_DEVICE=a51
 export OF_MAINTAINER="Yillié"
 . build/envsetup.sh
-unset FOX_DYNAMIC_SAMSUNG_FIX
-export FOX_ADVANCED_SECURITY=1
-export FOX_USE_NANO_EDITOR=1
-export FOX_USE_SED_BINARY=1
-export FOX_USE_TAR_BINARY=1
-export FOX_USE_UNZIP_BINARY=1
-export FOX_USE_XZ_UTILS=1
-export FOX_REPLACE_BUSYBOX_PS=1
-export FOX_REPLACE_TOOLBOX_GETPROP=1
-export OF_DEVICE_WITHOUT_PERSIST=1
-export OF_DONT_KEEP_LOG_HISTORY=1
-export OF_ENABLE_LPTOOLS=1
-export OF_USE_HEXDUMP=1
-export OF_USE_SAMSUNG_HAPTICS=1
-export FOX_CUSTOM_BINS_TO_SDCARD=1
 lunch omni_a51-eng
 make recoveryimage
 echo ""
