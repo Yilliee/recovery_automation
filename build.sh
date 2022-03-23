@@ -39,9 +39,9 @@ echo ""
 echo "Cloning trees"
 git clone https://github.com/Yilliee/recovery_a51 -b fox_10.0 ~/fox-10/device/samsung/a51
 git clone https://github.com/Yilliee/recovery_universal9611-common -b fox_10.0 ~/fox-10/device/samsung/universal9611-common
-echo "#!/bin/sh" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
-echo "[ -f /sbin/from_fox_sd.sh ] && source /sbin/from_fox_sd.sh" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
-echo "exit 0" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
+#echo "#!/bin/sh" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
+#echo "[ -f /sbin/from_fox_sd.sh ] && source /sbin/from_fox_sd.sh" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
+#echo "exit 0" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
 echo ""
 
 echo "Starting Build"
