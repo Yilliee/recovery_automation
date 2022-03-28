@@ -33,12 +33,12 @@ git clone https://gitlab.com/orangefox/sync.git ; cd sync
 cd ~/fox-10/vendor/recovery
 git fetch https://github.com/yilliee/fox_vendor_recovery fox_10.0
 git cherry-pick 55050eb9c14ea9be2b5e0621a7e3485b5c755109
-cp /drone/src/AromaFM.zip ./FoxFiles/AromaFM/AromaFM.zip
+cp /drone/src/AromaFM.zip ~/fox-10/vendor/recovery/FoxFiles/AromaFM/AromaFM.zip
 echo ""
 
 echo "Cloning trees"
 git clone https://github.com/Yilliee/recovery_a51 -b fox_10.0 ~/fox-10/device/samsung/a51
-git clone https://github.com/Yilliee/recovery_universal9611-common -b fox_10.0 ~/fox-10/device/samsung/universal9611-common
+/#git clone https://github.com/Yilliee/recovery_universal9611-common -b fox_10.0 ~/fox-10/device/samsung/universal9611-common
 #echo "#!/bin/sh" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
 #echo "[ -f /sbin/from_fox_sd.sh ] && source /sbin/from_fox_sd.sh" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
 #echo "exit 0" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
