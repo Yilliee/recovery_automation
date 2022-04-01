@@ -1,0 +1,101 @@
+From dc9705fcdc60f12373b727ebf1cc843912252dc7 Mon Sep 17 00:00:00 2001
+From: fordownloads <vnukov.d03@gmail.com>
+Date: Mon, 14 Feb 2022 06:18:05 +0500
+Subject: [PATCH 2/2] =?UTF-8?q?New=20build=20vars=20-=20FOX=5FDEBUG=5FBUIL?=
+ =?UTF-8?q?D=5FRAW=5FIMAGE=20-=20FOX=5FREPLACE=5FBOOTIMAGE=5FDATE=20-=20OF?=
+ =?UTF-8?q?=5FMAINTAINER=5FAVATAR=20(by=20Yilli=C3=A9)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ OrangeFox.sh             | 21 ++++++++++++++++++++-
+ orangefox_build_vars.txt | 15 +++++++++++++++
+ 2 files changed, 35 insertions(+), 1 deletion(-)
+
+diff --git a/OrangeFox.sh b/OrangeFox.sh
+index 1e53662..9457634 100755
+--- a/OrangeFox.sh
++++ b/OrangeFox.sh
+@@ -46,6 +46,10 @@ fi
+ # The name of this script
+ THIS_SCRIPT=$(basename $0)
+ 
++if [ "$FOX_DEBUG_BUILD_RAW_IMAGE" = "1" ]
++then exit 0
++fi
++
+ # some colour codes
+ RED='\033[0;31m'
+ GREEN='\033[0;32m'
+@@ -368,7 +372,11 @@ local F="$DEFAULT_PROP"
+    	sed -i -e "s/ro.build.date.utc=.*/ro.build.date.utc=$DT/g" $F || \
+    	echo "ro.build.date.utc=$DT" >> $F
+ 
+-   [ -n "$2" ] && DT="$2" # don't change the true bootimage build date
++   if [ "$FOX_REPLACE_BOOTIMAGE_DATE" = "1" ]; then
++      echo -e "${GREEN}-- Replacing bootimage time ${NC}"
++   else
++      [ -n "$2" ] && DT="$2" # don't change the true bootimage build date
++   fi
+    grep -q "ro.bootimage.build.date.utc=" $F && \
+    	sed -i -e "s/ro.bootimage.build.date.utc=.*/ro.bootimage.build.date.utc=$DT/g" $F || \
+    	echo "ro.bootimage.build.date.utc=$DT" >> $F
+@@ -1288,6 +1296,17 @@ if [ "$FOX_VENDOR_CMD" = "Fox_Before_Recovery_Image" ]; then
+   fi
+ #######################
+ 
++  # Use a custom Maintainer Picture for about section [Yilliee]
++  if [ -n "$OF_MAINTAINER_AVATAR" ]; then
++      if [ -f "$OF_MAINTAINER_AVATAR" ]; then
++            echo -e "${GREEN}-- Using a custom maintainer picture from $OF_MAINTAINER_AVATAR ...${NC}"
++            $CP -p "$OF_MAINTAINER_AVATAR" "$FOX_RAMDISK/twres/images/Default/About/maintainer.png"
++      else
++            echo -e "${WHITEONRED}-- File $OF_MAINTAINER_AVATAR not found  ...${NC}"
++            echo -e "${WHITEONRED}-- Using default image for maintainer's about section ...${NC}"
++      fi
++  fi
++
+   # Get Magisk version
+   tmp1=$FOX_VENDOR_PATH/FoxFiles/Magisk.zip
+   if [ -n "$FOX_USE_SPECIFIC_MAGISK_ZIP" -a -e "$FOX_USE_SPECIFIC_MAGISK_ZIP" ]; then
+diff --git a/orangefox_build_vars.txt b/orangefox_build_vars.txt
+index 9cb4c4e..964a3e3 100644
+--- a/orangefox_build_vars.txt
++++ b/orangefox_build_vars.txt
+@@ -256,6 +256,15 @@
+ "OF_MAINTAINER"
+   - the maintainer's name
+ #
++OF_MAINTAINER_AVATAR" [NEW]
++ - Full path to maintainer's avatar that will be shown on about page
++ - Image should be 32 bit (!) PNG, 192x192 px
++ - Size of image should be as small as possible (~50kb), use "advdef -4z xxx.png" to shrink image
++ - Don't put NSFW content to avatar
++ - Not recommended if you building for phone with small recovery partition
++ - eg. 'export OF_MAINTAINER_AVATAR="/home/yillie/avatar.png"'
++ - default = nothing
++#
+ "OF_SCREEN_H"
+   - Use this if your screen's aspect ratio is not 16:9
+   - to calculate OF_SCREEN_H, if your screen width is not 1080, use this formula: <aspect ratio height>*120
+@@ -304,6 +313,11 @@
+  -     export FOX_BUGGED_AOSP_ARB_WORKAROUND="1420041600" [Wed Dec 31 2014 16:00:00 GMT]
+  - default = nothing
+ #
++"FOX_REPLACE_BOOTIMAGE_DATE" [NEW]
++ - FOX_BUGGED_AOSP_ARB_WORKAROUND doesn't replace ro.bootimage.build.date.utc
++ - Set this to 1 to replace bootimage time too
++ - default = 0
++#
+ "TARGET_DEVICE_ALT" [NEW]
+  - Use this if the device has more than one code name, so that the OrangeFox zip
+  - installer can support the alternative code name without just bombing out
+@@ -610,3 +624,4 @@
+ - This is *experimental* and should be considered as work-in-progress. You should test your builds thoroughly to make sure that everything works as expected
+ - default = 0
+ # -----------------------------------
++
+-- 
+2.35.1
+

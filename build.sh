@@ -31,17 +31,16 @@ echo "Syncing Ofox"
 git clone https://gitlab.com/orangefox/sync.git ; cd sync
 ./orangefox_sync.sh --debug --ssh 0 --path ~/fox-10 -b 10.0
 cd ~/fox-10/vendor/recovery
-git fetch https://github.com/yilliee/fox_vendor_recovery fox_10.0
-git cherry-pick 55050eb9c14ea9be2b5e0621a7e3485b5c755109
+git am /drone/src/0001-OrangeFox.sh-Use-bash-as-the-default-shell-if-bash-h.patch
+git am /drone/src/0002-New-build-vars-FOX_DEBUG_BUILD_RAW_IMAGE-FOX_REPLACE.patch
 cp /drone/src/AromaFM.zip ~/fox-10/vendor/recovery/FoxFiles/AromaFM/AromaFM.zip
 echo ""
 
 echo "Cloning trees"
 git clone https://github.com/Yilliee/recovery_a51 -b fox_10.0 ~/fox-10/device/samsung/a51
-/#git clone https://github.com/Yilliee/recovery_universal9611-common -b fox_10.0 ~/fox-10/device/samsung/universal9611-common
-#echo "#!/bin/sh" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
-#echo "[ -f /sbin/from_fox_sd.sh ] && source /sbin/from_fox_sd.sh" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
-#echo "exit 0" >> ~/fox-10/device/samsung/universal9611-common/recovery/root/system/bin/postrecoveryboot.sh
+echo "#!/bin/sh" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
+echo "[ -f /sbin/from_fox_sd.sh ] && source /sbin/from_fox_sd.sh" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
+echo "exit 0" >> ~/fox-10/device/samsung/a51/recovery/root/system/bin/postrecoveryboot.sh
 echo ""
 
 echo "Starting Build"
