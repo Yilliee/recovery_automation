@@ -1,4 +1,4 @@
-From dc9705fcdc60f12373b727ebf1cc843912252dc7 Mon Sep 17 00:00:00 2001
+From fe05cc6534b5a55f7e0a7692f76e775d87527f6d Mon Sep 17 00:00:00 2001
 From: fordownloads <vnukov.d03@gmail.com>
 Date: Mon, 14 Feb 2022 06:18:05 +0500
 Subject: [PATCH 2/2] =?UTF-8?q?New=20build=20vars=20-=20FOX=5FDEBUG=5FBUIL?=
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
  2 files changed, 35 insertions(+), 1 deletion(-)
 
 diff --git a/OrangeFox.sh b/OrangeFox.sh
-index 1e53662..9457634 100755
+index 503429d..128c64e 100755
 --- a/OrangeFox.sh
 +++ b/OrangeFox.sh
 @@ -46,6 +46,10 @@ fi
