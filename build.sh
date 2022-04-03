@@ -35,23 +35,21 @@ echo ""
 
 echo "Cloning trees"
 cd ~/pbrp-11
-git clone https://github.com/PitchBlackRecoveryProject/android_device_samsung_m21-pbrp device/samsung/a51
-cd device/samsung/a51
-git am /drone/src/0001*
-git am /drone/src/0002*
-git am /drone/src/0003*
+git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 device/samsung/a51
+git clone https://github.com/Yilliee/recovery_universal9611-common -b pbrp-11 device/samsung/universal9611-common
 echo ""
 
 echo "Starting Build"
 cd ~/pbrp-11
 . build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
-lunch omni_a51-eng
+lunch twrp_a51-eng
 make recoveryimage
 echo ""
 
 echo "Uploading recovery image"
 cd ~/pbrp-11/out/target/product/*
 
+mv recovery.img PBRP-11-3.1-a51-$(TZ=Asia/Karachi date +%Y%m%d-%H%M).img
 curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls recovery.img)
+./transfer wet $(ls PBRP*.img)
