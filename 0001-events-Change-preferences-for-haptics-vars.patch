@@ -1,0 +1,56 @@
+From 11071de8c71e01d013df9829c72d47d54ba43a92 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Yilli=C3=A9?= <yilliee@protonmail.com>
+Date: Sun, 3 Apr 2022 21:14:38 +0500
+Subject: [PATCH] events : Change preferences for haptics vars
+
+The previous configuration had set the preference of
+checking for the activation file to be the greatest
+which made the AIDL_HAPTICS and SAMSUNG_HAPTICS var
+useless incase the activation file existed.
+For some devices, the activation file does indeed
+exist but is not used by the kernel.
+---
+ minuitwrp/events.cpp | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/minuitwrp/events.cpp b/minuitwrp/events.cpp
+index 8779a46d..4ed03cec 100644
+--- a/minuitwrp/events.cpp
++++ b/minuitwrp/events.cpp
+@@ -142,12 +142,11 @@ int vibrate(int timeout_ms)
+     char tout[6];
+     sprintf(tout, "%i", timeout_ms);
+ 
+-#ifndef USE_QTI_HAPTICS
+-    if (std::ifstream(LEDS_HAPTICS_ACTIVATE_FILE).good()) {
+-        write_to_file(LEDS_HAPTICS_DURATION_FILE, tout);
+-        write_to_file(LEDS_HAPTICS_ACTIVATE_FILE, "1");
+-    } else
+-        write_to_file(VIBRATOR_TIMEOUT_FILE, std::to_string(timeout_ms));
++#ifdef USE_QTI_HAPTICS
++    android::sp<android::hardware::vibrator::V1_2::IVibrator> vib = android::hardware::vibrator::V1_2::IVibrator::getService();
++    if (vib != nullptr) {
++        vib->on((uint32_t)timeout_ms);
++    }
+ #elif defined(USE_QTI_AIDL_HAPTICS)
+     std::shared_ptr<IVibrator> vib = IVibrator::fromBinder(ndk::SpAIBinder(AServiceManager_getService(kVibratorInstance.c_str())));
+     if (vib != nullptr) {
+@@ -161,10 +160,11 @@ int vibrate(int timeout_ms)
+         write_to_file(VIBRATOR_TIMEOUT_FILE, tout);
+     }
+ #else
+-    android::sp<android::hardware::vibrator::V1_2::IVibrator> vib = android::hardware::vibrator::V1_2::IVibrator::getService();
+-    if (vib != nullptr) {
+-        vib->on((uint32_t)timeout_ms);
+-    }
++    if (std::ifstream(LEDS_HAPTICS_ACTIVATE_FILE).good()) {
++        write_to_file(LEDS_HAPTICS_DURATION_FILE, tout);
++        write_to_file(LEDS_HAPTICS_ACTIVATE_FILE, "1");
++    } else
++        write_to_file(VIBRATOR_TIMEOUT_FILE, std::to_string(timeout_ms));
+ #endif
+     return 0;
+ }
+-- 
+2.35.1
+

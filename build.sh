@@ -31,6 +31,8 @@ echo "Syncing SHRP-11 Sources"
 mkdir ~/pbrp-11 && cd ~/pbrp-11
 repo init -u https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-11.0
 repo sync --force-sync -j 20
+cd ~/pbrp-11/bootable/recovery
+git am /drone/src/0001-events-Change-preferences-for-haptics-vars.patch
 echo ""
 
 echo "Cloning trees"
