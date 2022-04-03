@@ -29,7 +29,7 @@ echo ""
 
 echo "Syncing SHRP-11 Sources"
 mkdir ~/pbrp-11 && cd ~/pbrp-11
-repo init -u git://github.com/PitchBlackRecoveryProject/manifest_pb -b android-11.0
+repo init -u https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-11.0
 repo sync --force-sync -j 20
 echo ""
 
