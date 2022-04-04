@@ -37,6 +37,7 @@ echo ""
 echo "Cloning trees"
 cd ~/shrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b shrp-11 ~/shrp-11/device/samsung/a51 --depth=1 --single-branch
+git clone https://github.com/Yilliee/recovery_universal9611-common -b shrp-11 ~/shrp-11/device/samsung/universal9611-common --depth=1 --single-branch
 echo ""
 
 echo "Starting Build"
