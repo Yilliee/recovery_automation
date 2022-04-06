@@ -32,8 +32,7 @@ mkdir ~/twrp-11
 cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j 20
-cd ~/twrp-11/bootable/recovery
-git am /drone/src/0001-graphics_utils-Check-for-ABGR-pixel-format-too.patch
+#cd ~/twrp-11/bootable/recovery
 #wget https://transfer.sh/b5yB7E/0001-1-2-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_X.patch
 #git am 0001-1-2-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_X.patch
 #cd ~/twrp-11/vendor/twrp
