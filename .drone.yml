@@ -1,0 +1,19 @@
+---
+kind: pipeline
+type: docker
+name: linux-amd64
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: Cloning & compiling
+    image: ubuntu:latest
+    commands:
+      - apt update && apt install bison build-essential bc bison curl libssl-dev git zip python python3 flex cpio libncurses5-dev wget -y
+      - git clone https://github.com/Yilliee/android_kernel_samsung_exynos9611 -b Celicia $HOME/source --depth=5
+      - git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9.git -b android-12.1.0_r1 --depth=1 $HOME/toolchain/arm
+      - git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9.git -b android-12.1.0_r1 --depth=1 $HOME/toolchain/aarch64
+      - git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86.git -b android-12.1.0_r1 --depth=1 $HOME/toolchain/clang
+      - cd $HOME/source && bash /drone/src/build.sh
