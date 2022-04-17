@@ -49,9 +49,25 @@ lunch twrp_a51-eng
 make recoveryimage
 echo ""
 
-echo "Uploading recovery image"
-cd ~/pbrp-11/out/target/product/*
+echo ""
+echo "Creating recovery zip the proper (but still not the proper) way"
+echo ""
+sed -i s@'$OUT'@'~/pbrp-11/out/target/product/a51'@g ~/pbrp-11/vendor/utils/pb_build.sh
+sed -i s@'cd ${OUT}/../../../../'@'cd ~/pbrp-11'@g ~/pbrp-11/vendor/utils/pb_build.sh
+sed -i s@'$TARGET_PRODUCT'@'twrp_a51'@g ~/pbrp-11/vendor/utils/pb_build.sh
+sed -i s@'-$PBRP_BUILD_TYPE'@'-BETA'@g ~/pbrp-11/vendor/utils/pb_build.sh
+bash ~/pbrp-11/vendor/utils/pb_build.sh
 
-mv recovery.img PBRP-11-3.1-a51-$(TZ=Asia/Karachi date +%Y%m%d-%H%M).img
+echo ""
+echo "Uploading recovery image and zip"
+echo ""
+
+cd $OUT
+
+PB_VERSION=$(cat ~/pbrp-11/bootable/recovery/variables.h | egrep "define\s+PB_MAIN_VERSION" | awk '{print $3}' | tr -d '"')
+cp recovery.img PBRP-11-$PB_VERSION-a51-$(TZ=Asia/Karachi date +%Y%m%d-%H%M).img
+
 curl -sL https://git.io/file-transfer | sh
 ./transfer wet $(ls PBRP*.img)
+./transfer wet $(ls PBRP*.zip)
+
