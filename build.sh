@@ -38,6 +38,9 @@ echo ""
 
 echo "Cloning trees"
 git clone https://github.com/Yilliee/recovery_a51 -b fox_10.0 ~/fox-10/device/samsung/a51
+cd ~/fox-10/device/samsung/a51/
+wget https://github.com/topjohnwu/Magisk/releases/download/v24.3/Magisk-v24.3.apk
+export FOX_USE_SPECIFIC_MAGISK_ZIP="$HOME/fox-10/device/samsung/a51/Magisk-v24.3.apk"
 echo ""
 
 echo "Starting Build"
