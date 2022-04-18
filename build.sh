@@ -40,14 +40,6 @@ echo ""
 echo "Cloning trees"
 cd ~/shrp-10
 git clone https://github.com/yilliee/recovery_a51 -b shrp-10 ~/shrp-10/device/samsung/a51
-echo "" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
-echo "# Exclude Apex from recovery" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
-echo "# This should prevent the recovery from getting" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
-echo "# Stuck at splash in A12 aosp beta GSIs" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
-echo "TW_EXCLUDE_APEX := true" >> ~/shrp-10/device/samsung/a51/BoardConfig.mk
-cd ~/shrp-10/device/samsung/a51/recovery/root
-rm init.recovery.usb.rc
-wget http://transfer.sh/2gSBQa/init.recovery.usb.rc
 echo ""
 
 echo "Starting Build"
@@ -61,5 +53,10 @@ echo ""
 
 echo "Uploading recovery image"
 cd ~/shrp-10/out/target/product/*
+
+VERSION=$(cat ~/shrp-10/bootable/recovery/SHRPVARS.cpp | grep "shrp_ver" | cut -d \, -f2 | cut -d \" -f2)
+cp recovery.img SHRP-10-$VERSION-a51-$(TZ=Asia/Karachi date +%Y%m%d-%H%M).img
+
 curl -sL https://git.io/file-transfer | sh
 ./transfer wet $(ls SHRP*a51*.zip)
+./transfer wet $(ls SHRP*.img)
