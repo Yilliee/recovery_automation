@@ -34,6 +34,7 @@ cd ~/fox-10/vendor/recovery
 git am /drone/src/0001-OrangeFox.sh-Use-bash-as-the-default-shell-if-bash-h.patch
 git am /drone/src/0002-New-build-vars-FOX_DEBUG_BUILD_RAW_IMAGE-FOX_REPLACE.patch
 cp /drone/src/AromaFM.zip ~/fox-10/vendor/recovery/FoxFiles/AromaFM/AromaFM.zip
+cp /drone/src/fox_list_apps ~/fox-10/vendor/recovery/FoxExtras/fox_list_apps
 echo ""
 
 echo "Cloning trees"
@@ -47,6 +48,7 @@ echo "Starting Build"
 cd ~/fox-10
 export CURR_DEVICE=a51
 export OF_MAINTAINER="Yillié"
+export FOX_ENABLE_APP_MANAGER=1
 . build/envsetup.sh
 lunch omni_a51-eng
 make recoveryimage
