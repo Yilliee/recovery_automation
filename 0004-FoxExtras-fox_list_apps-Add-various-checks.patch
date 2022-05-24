@@ -1,0 +1,79 @@
+From 548a7b0a8f55659fd386c44e0674f73c4b43690e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Yilli=C3=A9?= <yilliee@protonmail.com>
+Date: Wed, 25 May 2022 10:41:04 +0500
+Subject: [PATCH 4/4] FoxExtras : fox_list_apps : Add various checks
+
+- If an app with same name has already been processed,
+  then add the package name after the app name to
+  differenriate the two.
+- If the base.apk does not exist in the supposed path,
+  skip checking for the app name via aapt and do not
+  add it to the list. ( @DarthJabba9 )
+
+Co-authored-by: Darth9 <reyprimerjefe@gmail.com>
+---
+ FoxExtras/sbin/fox_list_apps | 44 +++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 18 deletions(-)
+
+diff --git a/FoxExtras/sbin/fox_list_apps b/FoxExtras/sbin/fox_list_apps
+index 4fa72c6..c703f8c 100755
+--- a/FoxExtras/sbin/fox_list_apps
++++ b/FoxExtras/sbin/fox_list_apps
+@@ -30,28 +30,36 @@ local apps_dir="/data/app"
+ local namestr="application-label:'"
+ local d_mnt=$(is_mounted "/data")
+ 
+-	[ -d "$list" ] && return
+-	[ "$d_mnt" != "1" ] && mount /data
++    [ -d "$list" ] && return
++    [ "$d_mnt" != "1" ] && mount /data
+ 
+-	mkdir -p "$tmp" "$list"
++    mkdir -p "$tmp" "$list"
+ 
+ 
+-	if [ -f "/sbin/aapt" ]; then
+-	   for pkgname in $(ls /data/app/* | cut -d':' -f2 | cut -d'-' -f1 | sed "/^$/d" ) ; do
+-	       fullpath=$(ls /data/app/*/* | grep $pkgname | cut -d':' -f1)
+-	       name=$(aapt dump badging "$fullpath/base.apk" | grep "$namestr" | sed "s/"$namestr"//" | sed "s/'//" | sed "s/'//")
+-	       if [ -n "$name" ]; then
+-		  echo "$fullpath" > "$list/$name"
+-	       fi
+-	   done
+-	else
+-	   for pkgname in $(ls /data/app/* | cut -d':' -f2 | cut -d'-' -f1 | sed "/^$/d" ) ; do
+-		fullpath=$(ls /data/app/*/* | grep $pkgname | cut -d':' -f1)
+-		echo "$fullpath" > "$list/$pkgname"
+-	   done
+-	fi
++    if [ -f "/sbin/aapt" ]; then
++       for pkgname in $(ls /data/app/* | cut -d':' -f2 | cut -d'-' -f1 | sed "/^$/d" ) ; do
++          fullpath=$(ls /data/app/*/* | grep $pkgname | cut -d':' -f1)
++          if [ -f "$fullpath/base.apk" ]; then
++            name=$(aapt dump badging "$fullpath/base.apk" | grep "$namestr" | sed "s/"$namestr"//" | sed "s/'//" | sed "s/'//")
++            if [ -n "$name" ]; then
++              if [ -f "$list/$name" ]; then
++                echo "$fullpath" > "$list/$name ($pkgname)"
++              else
++                echo "$fullpath" > "$list/$name"
++              fi
++            fi
++          fi
++       done
++    else
++       for pkgname in $(ls /data/app/* | cut -d':' -f2 | cut -d'-' -f1 | sed "/^$/d" ) ; do
++          fullpath=$(ls /data/app/*/* | grep $pkgname | cut -d':' -f1)
++          if [ -f "$fullpath/base.apk" ]; then
++            echo "$fullpath" > "$list/$pkgname"
++          fi
++       done
++    fi
+ 
+-	exit 0
++    exit 0
+ }
+ 
+ Do_Cleanup() {
+-- 
+2.35.1
+

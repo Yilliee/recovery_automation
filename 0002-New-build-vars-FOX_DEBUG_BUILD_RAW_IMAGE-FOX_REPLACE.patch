@@ -1,7 +1,7 @@
 From fe05cc6534b5a55f7e0a7692f76e775d87527f6d Mon Sep 17 00:00:00 2001
 From: fordownloads <vnukov.d03@gmail.com>
 Date: Mon, 14 Feb 2022 06:18:05 +0500
-Subject: [PATCH 2/2] =?UTF-8?q?New=20build=20vars=20-=20FOX=5FDEBUG=5FBUIL?=
+Subject: [PATCH 2/4] =?UTF-8?q?New=20build=20vars=20-=20FOX=5FDEBUG=5FBUIL?=
  =?UTF-8?q?D=5FRAW=5FIMAGE=20-=20FOX=5FREPLACE=5FBOOTIMAGE=5FDATE=20-=20OF?=
  =?UTF-8?q?=5FMAINTAINER=5FAVATAR=20(by=20Yilli=C3=A9)?=
 MIME-Version: 1.0
