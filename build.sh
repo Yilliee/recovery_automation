@@ -31,11 +31,11 @@ echo "Syncing Ofox"
 git clone https://gitlab.com/orangefox/sync.git ; cd sync
 ./orangefox_sync.sh --debug --ssh 0 --path ~/fox-10 -b 10.0
 cd ~/fox-10/vendor/recovery
-git am /drone/src/0001-OrangeFox.sh-Use-bash-as-the-default-shell-if-bash-h.patch
-git am /drone/src/0002-New-build-vars-FOX_DEBUG_BUILD_RAW_IMAGE-FOX_REPLACE.patch
-git am /drone/src/0003-FoxExtras-fox_list_apps-Add-support-for-A11-12-s-enc.patch
-git am /drone/src/0004-FoxExtras-fox_list_apps-Add-various-checks.patch
-cp /drone/src/AromaFM.zip ~/fox-10/vendor/recovery/FoxFiles/AromaFM/AromaFM.zip
+git am /drone/src/patches/0001-OrangeFox.sh-Use-bash-as-the-default-shell-if-bash-h.patch
+git am /drone/src/patches/0002-New-build-vars-FOX_DEBUG_BUILD_RAW_IMAGE-FOX_REPLACE.patch
+git am /drone/src/patches/0003-FoxExtras-fox_list_apps-Add-support-for-A11-12-s-enc.patch
+git am /drone/src/patches/0004-FoxExtras-fox_list_apps-Add-various-checks.patch
+cp /drone/src/files/AromaFM.zip ~/fox-10/vendor/recovery/FoxFiles/AromaFM/AromaFM.zip
 echo ""
 
 echo "Cloning trees"
@@ -50,8 +50,6 @@ cd ~/fox-10
 export CURR_DEVICE=a51
 export OF_MAINTAINER="Yillié"
 . build/envsetup.sh
-unset FOX_DISABLE_APP_MANAGER
-export FOX_ENABLE_APP_MANAGER=1
 lunch omni_a51-eng
 make recoveryimage
 echo ""
