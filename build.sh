@@ -41,6 +41,7 @@ echo "Cloning trees"
 cd ~/twrp-12
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-12/device/samsung/a51 --depth=1 --single-branch
 git clone https://github.com/Yilliee/recovery_universal9611-common -b twrp-11 ~/twrp-12/device/samsung/universal9611-common --depth=1 --single-branch
+echo -e "\nTARGET_SUPPORTS_64_BIT_APPS := true" >> ~/twrp-12/device/samsung/universal9611-common/BoardConfigCommon.mk
 echo ""
 
 echo "Starting Build"
