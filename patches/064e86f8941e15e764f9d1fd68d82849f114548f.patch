@@ -1,0 +1,143 @@
+From 064e86f8941e15e764f9d1fd68d82849f114548f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Yilli=C3=A9?= <yilliee@protonmail.com>
+Date: Sun, 3 Oct 2021 18:39:40 +0500
+Subject: [PATCH] Add an option to specify a custom x-axis value for status bar
+ clock
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The var TW_CLOCK_POS_X can be used to specify a custom position for
+the clock on the x-axis.
+One of the use-cases of this var is when the clock overlaps with the
+camera cutout. In that case, instead of specifiying an offset for
+the whole gui on y-axis, the clock can be offset on the x-axis only.
+
+Signed-off-by: Yillié <yilliee@protonmail.com>
+
+Co-authored-by: fordownloads <vnukov.d03@gmail.com>
+---
+ Android.mk                      | 13 +++++++++++++
+ data.cpp                        |  2 ++
+ gui/theme/landscape_hdpi/ui.xml |  2 +-
+ gui/theme/landscape_mdpi/ui.xml |  2 +-
+ gui/theme/portrait_hdpi/ui.xml  |  2 +-
+ gui/theme/portrait_mdpi/ui.xml  |  2 +-
+ gui/theme/watch_mdpi/ui.xml     |  2 +-
+ variables.h                     |  1 +
+ 8 files changed, 21 insertions(+), 5 deletions(-)
+
+diff --git a/Android.mk b/Android.mk
+index f27ac4b8ad..678c2cfda9 100755
+--- a/Android.mk
++++ b/Android.mk
+@@ -390,6 +390,19 @@ endif
+ ifneq ($(TW_CLOCK_OFFSET),)
+ 	LOCAL_CFLAGS += -DTW_CLOCK_OFFSET=$(TW_CLOCK_OFFSET)
+ endif
++ifneq ($(TW_CLOCK_POS_X),)
++       LOCAL_CFLAGS += -DTW_CLOCK_POS_X=$(TW_CLOCK_POS_X)
++else ifeq ($(TW_THEME),portrait_hdpi)
++       LOCAL_CFLAGS += -DTW_CLOCK_POS_X='"850"'
++else ifeq ($(TW_THEME),portrait_mdpi)
++       LOCAL_CFLAGS += -DTW_CLOCK_POS_X='"240"'
++else ifeq ($(TW_THEME),landscape_hdpi)
++       LOCAL_CFLAGS += -DTW_CLOCK_POS_X='"960"'
++else ifeq ($(TW_THEME),landscape_mdpi)
++       LOCAL_CFLAGS += -DTW_CLOCK_POS_X='"400"'
++else ifeq ($(TW_THEME),watch_mdpi)
++       LOCAL_CFLAGS += -DTW_CLOCK_POS_X='"160"'
++endif
+ ifneq ($(TW_OVERRIDE_SYSTEM_PROPS),)
+     TW_INCLUDE_LIBRESETPROP := true
+     LOCAL_CFLAGS += -DTW_OVERRIDE_SYSTEM_PROPS=$(TW_OVERRIDE_SYSTEM_PROPS)
+diff --git a/data.cpp b/data.cpp
+index 7661d69eaf..5bb9309095 100755
+--- a/data.cpp
++++ b/data.cpp
+@@ -749,6 +749,8 @@ void DataManager::SetDefaultValues()
+ 	mConst.SetValue(TW_MIN_SYSTEM_VAR, TW_MIN_SYSTEM_SIZE);
+ 	mData.SetValue(TW_BACKUP_NAME, "(Auto Generate)");
+ 
++	mConst.SetValue(TW_CLOCK_POS, TW_CLOCK_POS_X);
++
+ 	mPersist.SetValue(TW_INSTALL_REBOOT_VAR, "0");
+ 	mPersist.SetValue(TW_SIGNED_ZIP_VERIFY_VAR, "0");
+ 	mPersist.SetValue(TW_DISABLE_FREE_SPACE_VAR, "0");
+diff --git a/gui/theme/landscape_hdpi/ui.xml b/gui/theme/landscape_hdpi/ui.xml
+index bd055bd510..428f16003c 100755
+--- a/gui/theme/landscape_hdpi/ui.xml
++++ b/gui/theme/landscape_hdpi/ui.xml
+@@ -281,7 +281,7 @@
+ 
+ 			<text color="%text_color%">
+ 				<font resource="font_m"/>
+-				<placement x="%center_x%" y="%row1_header_y%" placement="5"/>
++				<placement x="%tw_clock_pos%" y="%row1_header_y%" placement="5"/>
+ 				<text>%tw_time%</text>
+ 			</text>
+ 
+diff --git a/gui/theme/landscape_mdpi/ui.xml b/gui/theme/landscape_mdpi/ui.xml
+index 9ab8863d02..bc5c7355cd 100755
+--- a/gui/theme/landscape_mdpi/ui.xml
++++ b/gui/theme/landscape_mdpi/ui.xml
+@@ -281,7 +281,7 @@
+ 
+ 			<text color="%text_color%">
+ 				<font resource="font_m"/>
+-				<placement x="%center_x%" y="%row1_header_y%" placement="5"/>
++				<placement x="%tw_clock_pos%" y="%row1_header_y%" placement="5"/>
+ 				<text>%tw_time%</text>
+ 			</text>
+ 
+diff --git a/gui/theme/portrait_hdpi/ui.xml b/gui/theme/portrait_hdpi/ui.xml
+index f7d21da3ff..5622eae3c2 100755
+--- a/gui/theme/portrait_hdpi/ui.xml
++++ b/gui/theme/portrait_hdpi/ui.xml
+@@ -278,7 +278,7 @@
+ 
+ 			<text color="%text_color%">
+ 				<font resource="font_m"/>
+-				<placement x="%center_x%" y="%row1_header_y%" placement="5"/>
++				<placement x="%tw_clock_pos%" y="%row1_header_y%" placement="5"/>
+ 				<text>%tw_time%</text>
+ 			</text>
+ 
+diff --git a/gui/theme/portrait_mdpi/ui.xml b/gui/theme/portrait_mdpi/ui.xml
+index 9189df0c76..ea6b189444 100755
+--- a/gui/theme/portrait_mdpi/ui.xml
++++ b/gui/theme/portrait_mdpi/ui.xml
+@@ -278,7 +278,7 @@
+ 
+ 			<text color="%text_color%">
+ 				<font resource="font_m"/>
+-				<placement x="%center_x%" y="%row1_header_y%" placement="5"/>
++				<placement x="%tw_clock_pos%" y="%row1_header_y%" placement="5"/>
+ 				<text>%tw_time%</text>
+ 			</text>
+ 
+diff --git a/gui/theme/watch_mdpi/ui.xml b/gui/theme/watch_mdpi/ui.xml
+index ed7ac825c8..9d82a8117a 100644
+--- a/gui/theme/watch_mdpi/ui.xml
++++ b/gui/theme/watch_mdpi/ui.xml
+@@ -217,7 +217,7 @@
+ 
+ 			<text color="%text_color%">
+ 				<font resource="font_m"/>
+-				<placement x="%center_x%" y="%row1_header_y%" placement="5"/>
++				<placement x="%tw_clock_pos%" y="%row1_header_y%" placement="5"/>
+ 				<text>%tw_time%</text>
+ 			</text>
+ 
+diff --git a/variables.h b/variables.h
+index 8ae34696d1..a332d54291 100755
+--- a/variables.h
++++ b/variables.h
+@@ -148,6 +148,7 @@
+ #define TW_UNMOUNT_SYSTEM           "tw_unmount_system"
+ #define TW_IS_SUPER                 "tw_is_super"
+ #define TW_AUTO_REFLASHTWRP_VAR     "tw_auto_reflashtwrp"
++#define TW_CLOCK_POS                "tw_clock_pos"
+ 
+ // Theme versioning
+ // version 2 requires theme to handle power button as action togglebacklight

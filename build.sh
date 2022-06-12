@@ -32,13 +32,14 @@ mkdir ~/twrp-11
 cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j 20
-#cd ~/twrp-11/bootable/recovery
+cd ~/twrp-11/bootable/recovery
+git am /drone/src/patches/* || exit 3
 #wget https://transfer.sh/b5yB7E/0001-1-2-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_X.patch
 #git am 0001-1-2-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_X.patch
 #cd ~/twrp-11/vendor/twrp
 #wget https://transfer.sh/uqutV0/0001-2-2-makevars-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_.patch
 #git am 0001-2-2-makevars-Introduce-TW_CPU_POS_X-and-TW_TIME_POS_.patch
-cp /drone/src/ui.xml ~/twrp-11/bootable/recovery/gui/theme/portrait_hdpi/ui.xml || exit 1
+#cp /drone/src/ui.xml ~/twrp-11/bootable/recovery/gui/theme/portrait_hdpi/ui.xml || exit 1
 echo ""
 
 echo "Cloning trees"
@@ -48,6 +49,9 @@ git clone https://github.com/Yilliee/recovery_universal9611-common -b twrp-11 ~/
 #git clone https://github.com/Yilliee/android_kernel_samsung_exynos9611 -b Celicia ~/twrp-11/kernel/samsung/universal9610 --depth=1 --single-branch
 #echo "TW_CPU_POS_X := 590" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 #echo "TW_TIME_POS_X := 120" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CLOCK_POS_X := 600" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_STATUSBAR_PADDING_LEFT := 200" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_STATUSBAR_PADDING_RIGHT := 900" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
