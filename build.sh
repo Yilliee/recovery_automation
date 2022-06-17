@@ -49,8 +49,8 @@ git clone https://github.com/Yilliee/recovery_universal9611-common -b twrp-11 ~/
 #git clone https://github.com/Yilliee/android_kernel_samsung_exynos9611 -b Celicia ~/twrp-11/kernel/samsung/universal9610 --depth=1 --single-branch
 #echo "TW_CPU_POS_X := 590" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 #echo "TW_TIME_POS_X := 120" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-echo "TW_CUSTOM_CLOCK_POS := 600" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-echo "TW_CUSTOM_CPU_POS := 200" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CUSTOM_CLOCK_POS := 120" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CUSTOM_CPU_POS := 600" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
