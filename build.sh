@@ -33,7 +33,7 @@ cd ~/twrp-12.1
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
 repo sync -j 20
 cd ~/twrp-12.1/bootable/recovery
-git am /drone/src/patches/0001-fscrypt-wip.patch || exit 2
+patch -p1 < /drone/src/patches/0001-fscrypt-wip.patch || exit 2
 cd ~/twrp-12.1/system/vold
 git am /drone/src/patches/0001-fscrypt-move-functionality-to-libvold.patch || exit 2
 echo ""
