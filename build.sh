@@ -42,6 +42,7 @@ echo "Cloning trees"
 cd ~/twrp-12.1
 git clone https://github.com/Yilliee/recovery_RMX2001 -b twrp-11 ~/twrp-12.1/device/realme/RMX2001 --depth=1 --single-branch
 echo -e "\nTARGET_SUPPORTS_64_BIT_APPS := true" >> ~/twrp-12.1/device/realme/RMX2001/BoardConfig.mk
+echo -e "\nTW_INCLUDE_PYTHON := true" >> ~/twrp-12.1/device/realme/RMX2001/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
