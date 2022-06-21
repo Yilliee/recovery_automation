@@ -1,7 +1,7 @@
 From ee5aa15f8007dcfd1d615f57c4acfce168d87179 Mon Sep 17 00:00:00 2001
 From: Danny Lin <danny@kdrag0n.dev>
 Date: Mon, 31 Aug 2020 21:18:11 -0700
-Subject: [PATCH 2/2]  gui: Render UI at 60 FPS
+Subject: [PATCH 3/3]  gui: Render UI at 60 FPS
 
 Change-Id: Ic09c6d086f96fc23c24142a70ffd007ae72e34bf
 ---
