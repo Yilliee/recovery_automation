@@ -44,7 +44,8 @@ git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/sa
 git clone https://github.com/Yilliee/recovery_universal9611-common -b twrp-11 ~/twrp-11/device/samsung/universal9611-common --depth=1 --single-branch
 #git clone https://github.com/Yilliee/android_kernel_samsung_exynos9611 -b Celicia ~/twrp-11/kernel/samsung/universal9610 --depth=1 --single-branch
 #echo "TW_CUSTOM_CLOCK_POS := 120" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-#echo "TW_CUSTOM_CPU_POS := 600" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CUSTOM_CPU_POS := 1044" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_NO_BATT_PERCENTAGE := true" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo "TW_STATUS_ICONS_ALIGN := 2" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 

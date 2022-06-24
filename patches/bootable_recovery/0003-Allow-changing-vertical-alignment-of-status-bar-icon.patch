@@ -1,17 +1,17 @@
-From 32dbab44560ac47dcb79ff2aaf83e0d933c6d36d Mon Sep 17 00:00:00 2001
+From 8db1d9160b7890a13721c2bd70514cd1798a2994 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Yilli=C3=A9?= <yilliee@protonmail.com>
 Date: Tue, 21 Jun 2022 08:47:34 +0500
-Subject: [PATCH 3/3] Allow bottom-aligning status bar icons
+Subject: [PATCH 3/3] Allow changing vertical alignment of status bar icons
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-- If the var TW_STATUS_ICONS_BOTTOM_ALIGN is set to true it sets
-  the value of row1_header_y such that the bottom of the icons
-  corresponds to the bottom of the status bar.
-  ( Value calculated by : statusbar height - size of font_m ).
-- If it's not set to true, the value of row1_header_y defaults
-  to it's old value.
+- If the var TW_STATUS_ICONS_ALIGN can be set to:
+   1) 'center' or '2' to center-align the icons/text (vertically)
+   2) 'bottom' or '3' to bottom-align the icons/text (vertically)
+  ( Value calculated by utilizing statusbar height & size of font_m ).
+- If set to anything else or not set at all, it falls back to twrp's
+  old behaviour of top-aligning the status bar icons.
 
 Change-Id: I1b292221f3c34bbac20233595fbc0958d4aa4cc1
 Signed-off-by: Yillié <yilliee@protonmail.com>
@@ -44,7 +44,7 @@ index 258ac8daf..faa842699 100644
  		err = ioutil.WriteFile(twRes + i, []byte(newFile), 0)
  		if err != nil {
 diff --git a/gui/theme/landscape_hdpi/ui.xml b/gui/theme/landscape_hdpi/ui.xml
-index 2f210f3e8..e7b2e3cfd 100755
+index 8ce6a6a5d..0948c8cd5 100755
 --- a/gui/theme/landscape_hdpi/ui.xml
 +++ b/gui/theme/landscape_hdpi/ui.xml
 @@ -119,7 +119,10 @@
@@ -60,7 +60,7 @@ index 2f210f3e8..e7b2e3cfd 100755
  		<variable name="row3_header_y" value="60"/>
  		<variable name="row4_header_y" value="126"/>
 diff --git a/gui/theme/landscape_mdpi/ui.xml b/gui/theme/landscape_mdpi/ui.xml
-index 58a259b2e..8c50918dc 100755
+index 02f4e3990..e28043b9c 100755
 --- a/gui/theme/landscape_mdpi/ui.xml
 +++ b/gui/theme/landscape_mdpi/ui.xml
 @@ -119,7 +119,10 @@
@@ -76,7 +76,7 @@ index 58a259b2e..8c50918dc 100755
  		<variable name="row3_header_y" value="24"/>
  		<variable name="row4_header_y" value="52"/>
 diff --git a/gui/theme/portrait_hdpi/ui.xml b/gui/theme/portrait_hdpi/ui.xml
-index 4eccbadbb..52056833b 100755
+index 14fdb3e6c..a06383edf 100755
 --- a/gui/theme/portrait_hdpi/ui.xml
 +++ b/gui/theme/portrait_hdpi/ui.xml
 @@ -113,7 +113,10 @@
@@ -92,7 +92,7 @@ index 4eccbadbb..52056833b 100755
  		<variable name="row3_header_y" value="90"/>
  		<variable name="row4_header_y" value="168"/>
 diff --git a/gui/theme/portrait_mdpi/ui.xml b/gui/theme/portrait_mdpi/ui.xml
-index 42ead0561..b317a05fe 100755
+index dbcb1d188..3893a39d3 100755
 --- a/gui/theme/portrait_mdpi/ui.xml
 +++ b/gui/theme/portrait_mdpi/ui.xml
 @@ -113,7 +113,10 @@
@@ -108,7 +108,7 @@ index 42ead0561..b317a05fe 100755
  		<variable name="row3_header_y" value="40"/>
  		<variable name="row4_header_y" value="74"/>
 diff --git a/gui/theme/watch_mdpi/ui.xml b/gui/theme/watch_mdpi/ui.xml
-index 478509409..4d8faf6a5 100644
+index a76bbdd1f..1b6865b87 100644
 --- a/gui/theme/watch_mdpi/ui.xml
 +++ b/gui/theme/watch_mdpi/ui.xml
 @@ -96,7 +96,10 @@
