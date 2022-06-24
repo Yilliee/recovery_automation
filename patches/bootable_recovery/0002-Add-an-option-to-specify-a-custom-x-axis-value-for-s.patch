@@ -1,13 +1,13 @@
-From 83f3bc9701137bef0f3e3be371a96080d66961cb Mon Sep 17 00:00:00 2001
+From 0e91e3cca268d6d7e640455eba30003297f2747a Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Yilli=C3=A9?= <yilliee@protonmail.com>
 Date: Sun, 3 Oct 2021 18:39:40 +0500
-Subject: [PATCH 1/3] Add an option to specify a custom x-axis value for status
+Subject: [PATCH 2/3] Add an option to specify a custom x-axis value for status
  bar items
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
- - The var TW_CUSTOM_CLOCK_POS, TW_CUSTOM_CPU_TEMP_POS and
+ - The var TW_CUSTOM_CLOCK_POS, TW_CUSTOM_CPU_POS and
    TW_CUSTOM_BATTERY_POS can be used to specify a custom position
    for the clock, cpu temperature and battery percentage on the x-axis.
  - One of the use-cases of this var is when the status bar items overlap
@@ -17,34 +17,48 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Yillié <yilliee@protonmail.com>
 Change-Id: Ic01d301731822a598b0ca8adb2280c4d01a3622f
+Signed-off-by: Mohd Faraz <androiabledroid@gmail.com>
 ---
- Android.mk                      | 8 +++++++-
- gui/theme/landscape_hdpi/ui.xml | 9 ++++++---
- gui/theme/landscape_mdpi/ui.xml | 9 ++++++---
- gui/theme/portrait_hdpi/ui.xml  | 9 ++++++---
- gui/theme/portrait_mdpi/ui.xml  | 9 ++++++---
- gui/theme/watch_mdpi/ui.xml     | 9 ++++++---
- 6 files changed, 37 insertions(+), 16 deletions(-)
+ gui/libguitwrp_defaults.go      | 14 ++++++++++++++
+ gui/theme/landscape_hdpi/ui.xml |  9 ++++++---
+ gui/theme/landscape_mdpi/ui.xml |  9 ++++++---
+ gui/theme/portrait_hdpi/ui.xml  |  9 ++++++---
+ gui/theme/portrait_mdpi/ui.xml  |  9 ++++++---
+ gui/theme/watch_mdpi/ui.xml     |  9 ++++++---
+ 6 files changed, 44 insertions(+), 15 deletions(-)
 
-diff --git a/Android.mk b/Android.mk
-index f27ac4b8a..9727c5f0c 100755
---- a/Android.mk
-+++ b/Android.mk
-@@ -570,7 +570,13 @@ TW_THEME_VERSION := $(shell grep TW_THEME_VERSION bootable/recovery/variables.h
- 
- LOCAL_POST_INSTALL_CMD += \
-     sed -i "s/{themeversion}/$(TW_THEME_VERSION)/" $(TARGET_RECOVERY_ROOT_OUT)/twres/splash.xml; \
--    sed -i "s/{themeversion}/$(TW_THEME_VERSION)/" $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml;
-+    sed -i "s/{themeversion}/$(TW_THEME_VERSION)/" $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml; \
-+    if [ -n "$(TW_CUSTOM_BATTERY_POS)" ]; then sed -i "s/{battery_pos}/$(TW_CUSTOM_BATTERY_POS)/"  $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml; \
-+    else sed -i "s/{battery_pos}/%indent_right%/"  $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml; fi; \
-+    if [ -n "$(TW_CUSTOM_CLOCK_POS)" ]; then sed -i "s/{clock_pos}/$(TW_CUSTOM_CLOCK_POS)/"  $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml; \
-+    else sed -i "s/{clock_pos}/%center_x%/"  $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml; fi; \
-+    if [ -n "$(TW_CUSTOM_CPU_POS)" ]; then sed -i "s/{cpu_pos}/$(TW_CUSTOM_CPU_POS)/"  $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml; \
-+    else sed -i "s/{cpu_pos}/%indent%/"  $(TARGET_RECOVERY_ROOT_OUT)/twres/ui.xml; fi;
- 
- include $(BUILD_EXECUTABLE)
- 
+diff --git a/gui/libguitwrp_defaults.go b/gui/libguitwrp_defaults.go
+index 222564c7f..258ac8daf 100644
+--- a/gui/libguitwrp_defaults.go
++++ b/gui/libguitwrp_defaults.go
+@@ -76,6 +76,15 @@ func copyThemeResources(ctx android.BaseContext, dirs []string, files []string)
+ 			version = strings.Split(line, " ")[2]
+ 		}
+ 	}
++
++	_props := [3]string{"TW_CUSTOM_BATTERY_POS", "TW_CUSTOM_CLOCK_POS", "TW_CUSTOM_CPU_POS"}
++	props := [3]string{"%indent_right%", "%center_x%", "%indent%"}
++	for i, item := range _props {
++		if getMakeVars(ctx, item) != "" {
++			props[i] = getMakeVars(ctx, item)
++		}
++	}
++
+ 	_files := [2]string{"splash.xml", "ui.xml"}
+ 	for _, i := range _files {
+ 		data, err = ioutil.ReadFile(twRes + i)
+@@ -84,6 +93,11 @@ func copyThemeResources(ctx android.BaseContext, dirs []string, files []string)
+ 			return
+ 		}
+ 		newFile := strings.Replace(string(data), "{themeversion}", version, -1)
++		if i == "ui.xml" {
++			newFile = strings.Replace(newFile, "{battery_pos}", props[0], -1)
++			newFile = strings.Replace(newFile, "{clock_pos}", props[1], -1)
++			newFile = strings.Replace(newFile, "{cpu_pos}", props[2], -1)
++		}
+ 		err = ioutil.WriteFile(twRes + i, []byte(newFile), 0)
+ 		if err != nil {
+ 			fmt.Println(err)
 diff --git a/gui/theme/landscape_hdpi/ui.xml b/gui/theme/landscape_hdpi/ui.xml
 index bd055bd51..2f210f3e8 100755
 --- a/gui/theme/landscape_hdpi/ui.xml

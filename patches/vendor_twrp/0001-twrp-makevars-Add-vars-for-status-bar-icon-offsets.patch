@@ -1,0 +1,35 @@
+From 09abe2dd6140e44d4ade2a880bef72715c1b7b4f Mon Sep 17 00:00:00 2001
+From: Mohd Faraz <androiabledroid@gmail.com>
+Date: Thu, 23 Jun 2022 12:51:32 +0200
+Subject: [PATCH] twrp: makevars: Add vars for status bar icon offsets
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Mohd Faraz <androiabledroid@gmail.com>
+Signed-off-by: Yillié <yilliee@protonmail.com>
+Change-Id: I5b00ec281717540f732789f191188ce8041eb083
+---
+ soong/makevars.mk | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/soong/makevars.mk b/soong/makevars.mk
+index 7ccb32f..3809bef 100644
+--- a/soong/makevars.mk
++++ b/soong/makevars.mk
+@@ -49,7 +49,11 @@ EXPORT_TO_SOONG := \
+     TARGET_PREBUILT_KERNEL \
+     TW_EXCLUDE_NANO \
+     TW_SUPPORT_INPUT_AIDL_HAPTICS \
+-    TW_USE_SAMSUNG_HAPTICS
++    TW_USE_SAMSUNG_HAPTICS \
++    TW_STATUS_ICONS_ALIGN \
++    TW_CUSTOM_BATTERY_POS \
++    TW_CUSTOM_CLOCK_POS \
++    TW_CUSTOM_CPU_POS
+ 
+ SOONG_CONFIG_NAMESPACES += makeVarsPlugin
+ SOONG_CONFIG_makeVarsPlugin :=
+-- 
+2.36.1
+

@@ -33,7 +33,9 @@ cd ~/twrp-11
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11 --depth=1
 repo sync -j 20
 cd ~/twrp-11/bootable/recovery
-git am /drone/src/patches/* || exit 3
+git am /drone/src/patches/bootable_recovery/* || exit 3
+cd ~/twrp-11/vendor/twrp
+git am /drone/src/patches/vendor_twrp/* || exit 3
 echo ""
 
 echo "Cloning trees"
@@ -43,7 +45,7 @@ git clone https://github.com/Yilliee/recovery_universal9611-common -b twrp-11 ~/
 #git clone https://github.com/Yilliee/android_kernel_samsung_exynos9611 -b Celicia ~/twrp-11/kernel/samsung/universal9610 --depth=1 --single-branch
 echo "TW_CUSTOM_CLOCK_POS := 120" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo "TW_CUSTOM_CPU_POS := 600" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-echo "TW_STATUS_ICONS_BOTTOM_ALIGN := true" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_STATUS_ICONS_ALIGN := bottom" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
 echo "Starting Build"
