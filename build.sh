@@ -33,9 +33,10 @@ cd ~/twrp-12.1
 repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 --depth=1
 repo sync -j 20
 cd ~/twrp-12.1/bootable/recovery
-patch -p1 < /drone/src/patches/0001-fscrypt-wip.patch || exit 2
+git fetch https://github.com/Yilliee/android_bootable_recovery/commits/android-12.1
+git cherry-pick 97dcc354a1ad2c56d42107f7ab983aaba28abc7d^..56a38a04b23eef59b23d6c64d77a1e55a258c3ec
 cd ~/twrp-12.1/system/vold
-git am /drone/src/patches/0001-fscrypt-move-functionality-to-libvold.patch || exit 2
+git am /drone/src/patches/system_vold/0001-fscrypt-move-functionality-to-libvold.patch || exit 2
 echo ""
 
 echo "Cloning trees"

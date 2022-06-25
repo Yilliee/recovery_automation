@@ -1,4 +1,4 @@
-From a89d31e899be6d5d1be4db647f5aafd26883c422 Mon Sep 17 00:00:00 2001
+From e08f6fe8a26a4f6ebb332495e48a3d857d342ae0 Mon Sep 17 00:00:00 2001
 From: bigbiff <bigbiff@teamw.in>
 Date: Tue, 18 Jan 2022 18:55:46 -0500
 Subject: [PATCH] fscrypt: move functionality to libvold
@@ -12,7 +12,7 @@ Subject: [PATCH] fscrypt: move functionality to libvold
 Change-Id: Ib92344c11db2be9bb33d1e527ea023f6890b3747
 ---
  Android.bp           |   75 +++-
- Decrypt.cpp          | 1007 ++++++++++++++++++++++++++++++++++++++++++
+ Decrypt.cpp          | 1008 ++++++++++++++++++++++++++++++++++++++++++
  Decrypt.h            |   43 ++
  FsCrypt.cpp          |   46 +-
  FsCrypt.h            |    2 +
@@ -34,7 +34,7 @@ Change-Id: Ib92344c11db2be9bb33d1e527ea023f6890b3747
  fscrypt_policy.cpp   |  160 +++++++
  fscrypt_policy.h     |   87 ++++
  fscryptpolicyget.cpp |   47 ++
- 23 files changed, 2077 insertions(+), 131 deletions(-)
+ 23 files changed, 2078 insertions(+), 131 deletions(-)
  create mode 100755 Decrypt.cpp
  create mode 100755 Decrypt.h
  create mode 100644 HashPassword.cpp
@@ -49,7 +49,7 @@ Change-Id: Ib92344c11db2be9bb33d1e527ea023f6890b3747
  create mode 100755 fscryptpolicyget.cpp
 
 diff --git a/Android.bp b/Android.bp
-index d2c6ffc..d100dd2 100644
+index 86a1160..be9ca7f 100644
 --- a/Android.bp
 +++ b/Android.bp
 @@ -12,6 +12,8 @@ cc_defaults {
@@ -69,9 +69,9 @@ index d2c6ffc..d100dd2 100644
          "liblogwrap",
          "libselinux",
          "libsysutils",
-@@ -109,16 +110,22 @@ cc_library_static {
-         "vold_default_flags",
-         "vold_default_libs",
+@@ -111,16 +112,22 @@ cc_library_static {
+         "vold_hw_fde_defaults",
+         "vold_hw_fde_perf_defaults",
      ],
 -
 +    include_dirs: [
@@ -93,7 +93,7 @@ index d2c6ffc..d100dd2 100644
          "IdleMaint.cpp",
          "KeyBuffer.cpp",
          "KeyStorage.cpp",
-@@ -136,7 +143,7 @@ cc_library_static {
+@@ -138,7 +145,7 @@ cc_library_static {
          "VoldNativeServiceValidation.cpp",
          "VoldUtil.cpp",
          "VolumeManager.cpp",
@@ -102,7 +102,7 @@ index d2c6ffc..d100dd2 100644
          "fs/Exfat.cpp",
          "fs/Ext4.cpp",
          "fs/F2fs.cpp",
-@@ -164,11 +171,29 @@ cc_library_static {
+@@ -166,11 +173,29 @@ cc_library_static {
          },
      },
      shared_libs: [
@@ -132,7 +132,7 @@ index d2c6ffc..d100dd2 100644
          "libkeymint_support",
      ],
      whole_static_libs: [
-@@ -301,3 +326,47 @@ filegroup {
+@@ -304,3 +329,47 @@ filegroup {
      ],
      path: "binder",
  }
@@ -182,10 +182,10 @@ index d2c6ffc..d100dd2 100644
 +}
 diff --git a/Decrypt.cpp b/Decrypt.cpp
 new file mode 100755
-index 0000000..60fedd3
+index 0000000..28fc3cc
 --- /dev/null
 +++ b/Decrypt.cpp
-@@ -0,0 +1,1007 @@
+@@ -0,0 +1,1008 @@
 +/*
 + * Copyright (C) 2016 - 2020 The TeamWin Recovery Project
 + *
@@ -473,12 +473,20 @@ index 0000000..60fedd3
 +/* C++ replacement for
 + * https://android.googlesource.com/platform/frameworks/base/+/android-8.0.0_r23/services/core/java/com/android/server/locksettings/SyntheticPasswordManager.java#764 */
 +bool Get_Password_Data(const std::string& spblob_path, const std::string& handle_str, password_data_struct *pwd) {
-+	printf("fscrypt::Get_Password_Data::1\n");
 +	std::string pwd_file = spblob_path + handle_str + ".pwd";
 +	std::string pwd_data;
-+	if (!android::base::ReadFileToString(pwd_file, &pwd_data)) {
-+		printf("Failed to read '%s'\n", pwd_file.c_str());
-+		return false;
++	if (android::vold::pathExists(pwd_file)) {
++		if (!android::base::ReadFileToString(pwd_file, &pwd_data)) {
++			printf("Failed to read '%s'\n", pwd_file.c_str());
++			return false;
++		}
++	} else {
++		printf("trying to read password data with leading 0\n");
++		pwd_file = spblob_path + "0" + handle_str + ".pwd";
++		if (!android::base::ReadFileToString(pwd_file, &pwd_data)) {
++			printf("Failed to read '%s'\n", pwd_file.c_str());
++			return false;
++		}	
 +	}
 +	// output_hex(pwd_data.data(), pwd_data.size());printf("\n");
 +	const int* intptr = (const int*)pwd_data.data();
@@ -1133,22 +1141,15 @@ index 0000000..60fedd3
 +	}
 +    bool should_reenroll;
 +	bool request_reenroll = false;
-+	printf("fscrypt::gatekeeper::1\n");
 +	android::sp<android::hardware::gatekeeper::V1_0::IGatekeeper> gk_device;
-+	printf("fscrypt::gatekeeper::2\n");
 +	gk_device = ::android::hardware::gatekeeper::V1_0::IGatekeeper::getService();
-+	printf("fscrypt::gatekeeper::3\n");
 +	if (gk_device == nullptr)
 +		return false;
 +	android::hardware::hidl_vec<uint8_t> curPwdHandle;
-+	printf("fscrypt::gatekeeper::4\n");
 +	curPwdHandle.setToExternal(const_cast<uint8_t *>((const uint8_t *)handle.c_str()), st.st_size);
-+	printf("fscrypt::gatekeeper::5\n");
 +	android::hardware::hidl_vec<uint8_t> enteredPwd;
-+	printf("fscrypt::gatekeeper::6\n");
 +	enteredPwd.setToExternal(const_cast<uint8_t *>((const uint8_t *)Password.c_str()), Password.size());
 +
-+	printf("fscrypt::gatekeeper::7\n");
 +	android::hardware::Return<void> hwRet =
 +		gk_device->verify(user_id, 0 /* challange */,
 +						  curPwdHandle,
@@ -2473,10 +2474,10 @@ index 0000000..22f401e
 +
 +#endif
 diff --git a/cryptfs.cpp b/cryptfs.cpp
-index 91235d2..c9a143a 100644
+index 5fa49fe..623d628 100644
 --- a/cryptfs.cpp
 +++ b/cryptfs.cpp
-@@ -1213,7 +1213,7 @@ static int create_crypto_blk_dev(struct crypt_mnt_ftr* crypt_ftr, const unsigned
+@@ -1558,7 +1558,7 @@ static int create_crypto_blk_dev(struct crypt_mnt_ftr* crypt_ftr, const unsigned
      return 0;
  }
  
@@ -2486,10 +2487,10 @@ index 91235d2..c9a143a 100644
      auto& dm = DeviceMapper::Instance();
      // TODO(b/149396179) there appears to be a race somewhere in the system where trying
 diff --git a/cryptfs.h b/cryptfs.h
-index 872806e..bbbbe93 100644
+index 3ce0bd4..2b375a6 100644
 --- a/cryptfs.h
 +++ b/cryptfs.h
-@@ -71,6 +71,7 @@ int cryptfs_getfield(const char* fieldname, char* value, int len);
+@@ -80,6 +80,7 @@ int cryptfs_getfield(const char* fieldname, char* value, int len);
  int cryptfs_setfield(const char* fieldname, const char* value);
  int cryptfs_mount_default_encrypted(void);
  int cryptfs_get_password_type(void);
