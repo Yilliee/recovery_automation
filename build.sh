@@ -62,3 +62,13 @@ version=$(echo $version | cut -c1-5)
 mv recovery.img TWRP-12.1-${version}-RMX2001-$(TZ='Asia/Karachi' date "+%Y%m%d-%H%M").img
 curl -sL https://git.io/file-transfer | sh
 ./transfer wet $(ls TWRP*.img)
+
+cd ~/twrp-12.1/out/target/product/*/recovery/root || exit 3
+wget https://github.com/that1/ldcheck/raw/master/ldcheck
+chmod 0755 ldcheck
+echo "Keymaster 4"
+./ldcheck -p system/lib64:vendor/lib64 -d system/bin/android.hardware.keymaster@4.0-service.trustonic
+echo "Gatekeeper"
+./ldcheck -p system/lib64:vendor/lib64 -d vendor/bin/hw/android.hardware.gatekeeper@1.0-service
+echo "Oplus Crypto Hal"
+./ldcheck -p system/lib64:vendor/lib64 -d system/bin/hw/vendor.oplus.hardware.cryptoeng@1.0-service
