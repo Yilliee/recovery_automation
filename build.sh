@@ -34,7 +34,7 @@ repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.g
 repo sync -j 20
 cd ~/twrp-11/bootable/recovery
 git fetch https://github.com/Yilliee/android_bootable_recovery android-11
-git cherry-pick 49355e6f79b2b247ef58343b92f6e2a6f3f63da5^..f15a5eb2c665736bea5b2e22d9eec13726a44561
+git cherry-pick 16cbd6b7279e4350b6659dee4a5c3fd2636e68fc^..1fb1151ac3fee2ec6f9bc7119d5983d86234f143
 cd ~/twrp-11/vendor/twrp
 git am /drone/src/patches/vendor_twrp/* || exit 3
 echo ""
@@ -45,7 +45,7 @@ git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/sa
 git clone https://github.com/Yilliee/recovery_universal9611-common -b twrp-11 ~/twrp-11/device/samsung/universal9611-common --depth=1 --single-branch
 #git clone https://github.com/Yilliee/android_kernel_samsung_exynos9611 -b Celicia ~/twrp-11/kernel/samsung/universal9610 --depth=1 --single-branch
 echo "TW_CUSTOM_CLOCK_POS := \"left\"" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-echo "TW_CUSTOM_CPU_POS := 600" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CUSTOM_CPU_POS := center" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo "TW_CUSTOM_BATTERY_POS := right" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo "TW_STATUS_ICONS_ALIGN := 3" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
