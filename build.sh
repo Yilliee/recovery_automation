@@ -34,7 +34,7 @@ repo init https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.g
 repo sync -j 20
 cd ~/twrp-11/bootable/recovery
 git fetch https://github.com/Yilliee/android_bootable_recovery android-11
-git cherry-pick 16cbd6b7279e4350b6659dee4a5c3fd2636e68fc^..1fb1151ac3fee2ec6f9bc7119d5983d86234f143
+git cherry-pick 16cbd6b7279e4350b6659dee4a5c3fd2636e68fc^..32263849621461ee8191b0617494de07e5e38740
 cd ~/twrp-11/vendor/twrp
 git am /drone/src/patches/vendor_twrp/* || exit 3
 echo ""
@@ -44,16 +44,24 @@ cd ~/twrp-11
 git clone https://github.com/Yilliee/recovery_a51 -b twrp-11 ~/twrp-11/device/samsung/a51 --depth=1 --single-branch
 git clone https://github.com/Yilliee/recovery_universal9611-common -b twrp-11 ~/twrp-11/device/samsung/universal9611-common --depth=1 --single-branch
 #git clone https://github.com/Yilliee/android_kernel_samsung_exynos9611 -b Celicia ~/twrp-11/kernel/samsung/universal9610 --depth=1 --single-branch
-echo "TW_CUSTOM_CLOCK_POS := \"left\"" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-echo "TW_CUSTOM_CPU_POS := center" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
-echo "TW_CUSTOM_BATTERY_POS := right" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CUSTOM_CLOCK_POS := \"right\"" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CUSTOM_CPU_POS := left" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
+echo "TW_CUSTOM_BATTERY_POS := \"center\"" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo "TW_STATUS_ICONS_ALIGN := 3" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
-for i in portrait_mdpi landscape_hdpi landscape_mdpi watch_mdpi ; do
+for i in portrait_hdpi portrait_mdpi watch_mdpi landscape_hdpi landscape_mdpi ; do
 	echo "Replacing theme with $i"
 	sed -i 's/TW_THEME/#TW_THEME/g' ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+	sed -i 's/TW_ROTATION/#TW_ROTATION/g' ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+	sed -i 's/RECOVERY_TOUCHSCREEN_SWAP_XY/#RECOVERY_TOUCHSCREEN_SWAP_XY/g' ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+	sed -i 's/RECOVERY_TOUCHSCREEN_FLIP_X/#RECOVERY_TOUCHSCREEN_FLIP_X/g' ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
 	echo "TW_THEME := $i" >> ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+	if [ "$i" == "landscape_hdpi" ] || [ "$i" == "landscape_mdpi" ]; then
+		echo "TW_ROTATION := 270" >> ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+		echo "RECOVERY_TOUCHSCREEN_SWAP_XY := true" >> ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+		echo "RECOVERY_TOUCHSCREEN_FLIP_X := true" >> ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+	fi
 	echo "Starting Build"
 	cd ~/twrp-11
 	. build/envsetup.sh
