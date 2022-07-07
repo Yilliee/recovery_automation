@@ -50,19 +50,42 @@ echo "TW_CUSTOM_BATTERY_POS := right" >> ~/twrp-11/device/samsung/a51/BoardConfi
 echo "TW_STATUS_ICONS_ALIGN := 3" >> ~/twrp-11/device/samsung/a51/BoardConfig.mk
 echo ""
 
-echo "Starting Build"
-cd ~/twrp-11
-. build/envsetup.sh
-export ALLOW_MISSING_DEPENDENCIES=true
-lunch twrp_a51-eng
-make recoveryimage -j$( nproc --all )
-echo ""
+for i in portrait_mdpi landscape_hdpi landscape_mdpi watch_mdpi ; do
+	echo "Replacing theme with $i"
+	sed -i 's/TW_THEME/#TW_THEME/g' ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+	echo "TW_THEME := $i" >> ~/twrp-11/device/samsung/universal9611-common/BoardConfigCommon.mk
+	echo "Starting Build"
+	cd ~/twrp-11
+	. build/envsetup.sh
+	export ALLOW_MISSING_DEPENDENCIES=true
+	lunch twrp_a51-eng
+	make recoveryimage -j$( nproc --all )
+	echo ""
 
-echo "Uploading recovery image"
-cd ~/twrp-11/out/target/product/*
-version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
-version=$(echo $version | cut -c1-5)
+	echo "Uploading recovery image"
+	cd ~/twrp-11/out/target/product/*
+	version=$(cat ~/twrp-11/bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d \" -f2)
+	version=$(echo $version | cut -c1-5)
 
-mv recovery.img TWRP-11-${version}-a51-$(TZ='Asia/Karachi' date "+%Y%m%d-%H%M").img
+	mv recovery.img TWRP-11-${version}-a51-$(TZ='Asia/Karachi' date "+%Y%m%d-%H%M")-$i.img
+	curl -sL https://git.io/file-transfer | sh
+	./transfer wet $(ls TWRP*.img) >> $HOME/all
+	echo ""
+	echo ""
+	cat $HOME/all
+	echo ""
+	echo ""
+	cd ~/twrp-11
+	make clean -j$( nproc --all )
+	rm -rf ~/twrp-11/out
+done
+cd $HOME
 curl -sL https://git.io/file-transfer | sh
-./transfer wet $(ls TWRP*.img)
+./transfer wet $HOME/all
+echo ""
+echo ""
+echo ""
+cat $HOME/all
+echo ""
+echo ""
+echo ""
